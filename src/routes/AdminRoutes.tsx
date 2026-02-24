@@ -4,6 +4,8 @@ import DashBoardPage from "@/pages/admin/DashboardPage";
 import NotFoundPage from "@/components/common/error";
 import { useCurrentApp } from "@/components/context/app.context";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import UserPage from "@/pages/admin/UserPage";
+import RolesPage from "@/pages/admin/RolesPage";
 
 const AdminRoutes = () => {
   const { user } = useCurrentApp();
@@ -27,14 +29,22 @@ const AdminRoutes = () => {
             </ProtectedRoute>
           }
         />
-        {/* <Route
-          path="user-management"
+        <Route
+          path="users"
           element={
             <ProtectedRoute>
-              <ManageUserPage />
+              <UserPage />
             </ProtectedRoute>
           }
-        /> */}
+        />
+        <Route
+          path="roles"
+          element={
+            <ProtectedRoute>
+              <RolesPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

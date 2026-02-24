@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import AppHeader from "./app.header";
 import AppFooter from "./app.footer";
 
-const HEADER_HEIGHT = 72;
+const HEADER_HEIGHT = 80;
 
 const LayoutClient = () => {
   return (

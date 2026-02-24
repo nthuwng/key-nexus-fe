@@ -1,53 +1,52 @@
 import { useState } from "react";
-import { Input, Button, Typography, message } from "antd";
+import { Input, Button, Typography, message, Select } from "antd";
 import {
   UserOutlined,
   LockOutlined,
   ArrowLeftOutlined,
-  LaptopOutlined,
   GoogleOutlined,
   FacebookFilled,
+  PhoneOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
-import { loginAPI } from "@/service/user";
-import { useCurrentApp } from "@/components/context/app.context";
+import { registerAPI } from "@/service/user";
 
 const { Title } = Typography;
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { setUser, setIsAuthenticated } = useCurrentApp();
-
-  const handleLogin = async () => {
-    if (!email || !password) {
+  const handleRegister = async () => {
+    if (!email || !password || !confirmPassword) {
       message.error("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      message.error("Mật khẩu không khớp");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await loginAPI(email, password);
+      const res = await registerAPI(email, password);
 
       if (res && res.data) {
-        const { access_token, user } = res.data;
-
-        localStorage.setItem("access_token", access_token);
-        localStorage.setItem("user", JSON.stringify(user));
-
-        setUser(user);
-        setIsAuthenticated(true);
-
-        message.success("Đăng nhập thành công");
-        navigate("/");
+        message.success("Đăng ký thành công");
+        navigate("/login");
       } else {
-        message.error("Đăng nhập thất bại");
+        message.error("Đăng ký thất bại");
       }
     } catch (error: any) {
-      message.error(error?.message || "Sai tài khoản hoặc mật khẩu");
+      message.error(error?.message || "Đăng ký không thành công");
     } finally {
       setLoading(false);
     }
@@ -93,7 +92,7 @@ const LoginPage = () => {
           position: "relative",
         }}
       >
-        {/* ===== BÊN TRÁI ===== */}
+        {/* ===== BÊN TRÁI (giữ nguyên) ===== */}
         <div
           style={{
             flex: 1,
@@ -121,7 +120,10 @@ const LoginPage = () => {
               zIndex: 1,
             }}
           />
-          <Title level={2} style={{ color: "#fff", marginTop: 40,marginBottom: 16 }}>
+          <Title
+            level={2}
+            style={{ color: "#fff", marginTop: 40, marginBottom: 16 }}
+          >
             Key Nexus
           </Title>
 
@@ -155,7 +157,7 @@ const LoginPage = () => {
           </Button>
         </div>
 
-        {/* ===== CIRCLE Ở GIỮA ===== */}
+        {/* Circle giữa */}
         <div
           style={{
             position: "absolute",
@@ -173,10 +175,10 @@ const LoginPage = () => {
             zIndex: 2,
           }}
         >
-          <UserOutlined style={{ fontSize: 28, color: "#fff" }} />
+          <UserAddOutlined style={{ fontSize: 28, color: "#fff" }} />
         </div>
 
-        {/* ===== BÊN PHẢI - FORM LOGIN ===== */}
+        {/* ===== FORM REGISTER ===== */}
         <div
           style={{
             flex: 1,
@@ -187,7 +189,7 @@ const LoginPage = () => {
         >
           <div style={{ width: "100%" }}>
             <Title level={3} style={{ textAlign: "center", marginBottom: 8 }}>
-              Welcome Back!
+              Create Account!
             </Title>
 
             <p
@@ -197,9 +199,20 @@ const LoginPage = () => {
                 marginBottom: 30,
               }}
             >
-              Đăng nhập để bạn tốn tiền mua sắm nhanh hơn
+              Tạo tài khoản để chúng tôi có tiền của bạn
             </p>
 
+            {/* Fullname */}
+            <Input
+              size="large"
+              prefix={<UserOutlined />}
+              placeholder="Họ và tên"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              style={{ marginBottom: 16, height: 44 }}
+            />
+
+            {/* Email */}
             <Input
               size="large"
               prefix={<UserOutlined />}
@@ -209,12 +222,44 @@ const LoginPage = () => {
               style={{ marginBottom: 16, height: 44 }}
             />
 
+            {/* Phone + Gender */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+              <Input
+                size="large"
+                prefix={<PhoneOutlined />}
+                placeholder="Số điện thoại"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                style={{ height: 44 }}
+              />
+
+              <Select
+                size="large"
+                placeholder="Giới tính"
+                value={gender}
+                onChange={(value) => setGender(value)}
+                style={{ width: 150 }}
+              >
+                <Select.Option value="male">Nam</Select.Option>
+                <Select.Option value="female">Nữ</Select.Option>
+              </Select>
+            </div>
+
             <Input.Password
               size="large"
               prefix={<LockOutlined />}
               placeholder="Mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={{ marginBottom: 16, height: 44 }}
+            />
+
+            <Input.Password
+              size="large"
+              prefix={<LockOutlined />}
+              placeholder="Nhập lại mật khẩu"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               style={{ marginBottom: 20, height: 44 }}
             />
 
@@ -222,7 +267,7 @@ const LoginPage = () => {
               block
               size="large"
               loading={loading}
-              onClick={handleLogin}
+              onClick={handleRegister}
               style={{
                 height: 44,
                 fontWeight: 600,
@@ -231,9 +276,10 @@ const LoginPage = () => {
                 color: "#fff",
               }}
             >
-              Đăng nhập
+              Đăng ký
             </Button>
-            {/* Divider */}
+
+            {/* Social giữ nguyên */}
             <div
               style={{
                 margin: "20px 0",
@@ -251,7 +297,7 @@ const LoginPage = () => {
                   zIndex: 1,
                 }}
               >
-                Hoặc đăng nhập với
+                Hoặc đăng ký với
               </span>
               <div
                 style={{
@@ -266,7 +312,6 @@ const LoginPage = () => {
               />
             </div>
 
-            {/* Social Buttons */}
             <div style={{ display: "flex", gap: 14 }}>
               <Button
                 icon={<GoogleOutlined />}
@@ -300,16 +345,15 @@ const LoginPage = () => {
                 Facebook
               </Button>
             </div>
+
             <div
               style={{
                 marginTop: 16,
-                display: "flex",
-                justifyContent: "space-between",
+                textAlign: "center",
                 fontSize: 14,
               }}
             >
-              <Link to="/register">Tạo tài khoản</Link>
-              <Link to="/forgot-password">Quên mật khẩu?</Link>
+              Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
             </div>
           </div>
         </div>
@@ -318,4 +362,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

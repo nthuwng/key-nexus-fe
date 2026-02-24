@@ -32,9 +32,34 @@ declare global {
     username: string;
     gender: string;
     phone?: string;
-    roleId: {
+    status: string;
+    roleId?: {
       _id: string;
       name: string;
     };
+  }
+
+  interface IUserTable {
+    _id: string;
+    fullName: string;
+    email: string;
+    username: string;
+    gender: string;
+    phone?: string;
+    status: string;
+    roleId?: {
+      _id: string;
+      name: string;
+    };
+    createdAt?: string;
+    updatedAt?: string;
+  }
+
+  interface IRoles {
+    _id: string;
+    name: string;
+    permissions: string[];
+    createdAt: string;
+    updatedAt: string;
   }
 }

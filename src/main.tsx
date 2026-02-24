@@ -4,13 +4,17 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { AppProvider } from "@/components/context/app.context";
 import "antd/dist/reset.css";
+import { ConfigProvider } from "antd";
+import enUS from 'antd/locale/en_US';
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AppProvider>
       <BrowserRouter>
-        <App />
+        <ConfigProvider locale={enUS}>
+          <App />
+        </ConfigProvider>
       </BrowserRouter>
     </AppProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

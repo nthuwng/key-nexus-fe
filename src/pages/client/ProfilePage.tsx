@@ -7,22 +7,23 @@ import {
   SettingOutlined,
   LogoutOutlined,
   CustomerServiceOutlined,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { getProfileAPI } from "@/service/user";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
 
-  // ===== FETCH PROFILE =====
   const fetchProfile = async () => {
     try {
       const res = await getProfileAPI();
       setUser(res.data.user);
     } catch (error) {
-      console.log("Chưa đăng nhập");
       setUser(null);
     }
   };
@@ -31,17 +32,32 @@ const ProfilePage = () => {
     fetchProfile();
   }, []);
 
+  // ===== LOGOUT =====
+  const handleLogout = () => {
+    localStorage.clear();     // xóa toàn bộ local
+    setUser(null);
+    navigate("/login");       // chuyển về login
+  };
+
+  // ===== MENU CLICK =====
+  const handleMenuClick = ({ key }: any) => {
+    if (key === "logout") {
+      handleLogout();
+      return;
+    }
+    setActiveTab(key);
+  };
+
   return (
     <div
       style={{
         minHeight: "100vh",
-        background: "#f5f5f5",
+        background: "#7c92b5",
         display: "flex",
         justifyContent: "center",
         padding: "48px 16px",
       }}
     >
-      {/* KHUNG 3 – CONTAINER */}
       <div
         style={{
           width: "100%",
@@ -54,14 +70,37 @@ const ProfilePage = () => {
           boxShadow: "0 12px 32px rgba(0,0,0,0.1)",
         }}
       >
-        {/* KHUNG 1 – SIDEBAR */}
+        {/* SIDEBAR */}
         <div
           style={{
             width: 240,
             background: "#2f2f2f",
             padding: "32px 0",
+            position: "relative",
           }}
         >
+          {/* Back Button */}
+          <div
+            onClick={() => navigate("/")}
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 5,
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              background: "#2f2f2f",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "0.2s",
+            }}
+          >
+            <ArrowLeftOutlined style={{ color: "#fff", fontSize: 18 }} />
+          </div>
+
+          {/* Avatar */}
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <Avatar
               size={72}
@@ -78,7 +117,7 @@ const ProfilePage = () => {
             mode="inline"
             selectedKeys={[activeTab]}
             style={{ background: "transparent", borderRight: 0 }}
-            onClick={({ key }) => setActiveTab(key)}
+            onClick={handleMenuClick}
             items={[
               { key: "profile", icon: <HomeOutlined />, label: "Profile" },
               { key: "orders", icon: <ShoppingOutlined />, label: "My Orders" },
@@ -97,7 +136,7 @@ const ProfilePage = () => {
           />
         </div>
 
-        {/* KHUNG 2 – CONTENT (KHÔNG SCROLL) */}
+        {/* CONTENT */}
         <div
           style={{
             flex: 1,
@@ -107,7 +146,6 @@ const ProfilePage = () => {
             display: "flex",
           }}
         >
-          {/* PROFILE – CUSTOMER INFORMATION */}
           {activeTab === "profile" && (
             <Card
               title="Customer Information"
@@ -151,7 +189,6 @@ const ProfilePage = () => {
             </Card>
           )}
 
-          {/* TAB KHÁC – ĐỂ TRẮNG */}
           {activeTab !== "profile" && <div style={{ flex: 1 }} />}
         </div>
       </div>

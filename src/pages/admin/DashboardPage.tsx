@@ -1,5 +1,12 @@
-const DashBoardPage  = () => {
-  return <h1>Admin Dashboard</h1>;
+import TableDashboard from "@/components/admin/dashboard/table.dashboard";
+
+const DashBoardPage = () => {
+
+  return (
+    <>
+      <TableDashboard />
+    </>
+  );
 };
 
 export default DashBoardPage;

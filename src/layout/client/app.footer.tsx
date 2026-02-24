@@ -6,7 +6,7 @@ const AppFooter = () => {
   return (
     <Footer
       style={{
-        background: "#f9f9f9",
+        background: "#181c58",
         borderTop: "1px solid #eee",
         padding: "24px 0",
       }}
@@ -24,19 +24,19 @@ const AppFooter = () => {
         }}
       >
         {/* LEFT */}
-        <span style={{ color: "#666", fontSize: 14 }}>
+        <span style={{ color: "#fff", fontSize: 14 }}>
           © {new Date().getFullYear()} Thế Giới Key Nexus
         </span>
 
         {/* RIGHT */}
         <Space size={16}>
-          <a href="#" style={{ color: "#666" }}>
+          <a href="#" style={{ color: "#fff" }}>
             Giới thiệu
           </a>
-          <a href="#" style={{ color: "#666" }}>
+          <a href="#" style={{ color: "#fff" }}>
             Chính sách
           </a>
-          <a href="#" style={{ color: "#666" }}>
+          <a href="#" style={{ color: "#fff" }}>
             Liên hệ
           </a>
         </Space>
