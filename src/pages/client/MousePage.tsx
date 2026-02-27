@@ -272,7 +272,6 @@ const MousePage = () => {
               {/* Text */}
               <span style={{ fontWeight: 500, color: "#fff" }}>Xếp theo:</span>
 
-              {/* Select */}
               <Select
                 defaultValue="featured"
                 style={{ width: 180 }}
