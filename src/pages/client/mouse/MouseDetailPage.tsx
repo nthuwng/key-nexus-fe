@@ -128,7 +128,7 @@ const MouseDetailPage = () => {
                     alignItems: "center",
                     height: 340,
                     overflow: "hidden",
-                    overscrollBehavior: "contain", // QUAN TRỌNG: chặn scroll lan ra ngoài
+                    overscrollBehavior: "contain",
                   }}
                 >
                   {/* Danh sách ảnh */}
