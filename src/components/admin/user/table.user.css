@@ -1,0 +1,144 @@
+/* ============================= */
+/*        LUXURY ADMIN UI        */
+/* ============================= */
+
+/* ===== BODY BACKGROUND ===== */
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 40%, #fdf2f8 100%);
+  font-family: "Inter", sans-serif;
+}
+
+/* ===== HEADER ===== */
+.admin-header {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.admin-header span {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ===== PRO CARD ===== */
+.ant-pro-card {
+  border-radius: 20px !important;
+  border: 1px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.85) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+/* ===== PRO TABLE HEADER TITLE ===== */
+.ant-pro-card-title {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  background: linear-gradient(90deg,#6366f1,#ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+/* ===== TOOLBAR ===== */
+.ant-pro-table .ant-pro-table-toolbar {
+  padding: 16px 24px !important;
+}
+
+/* ===== PRIMARY BUTTON (Add New) ===== */
+.ant-pro-table .ant-btn-primary {
+  border-radius: 12px;
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+  transition: all 0.25s ease;
+}
+
+.ant-pro-table .ant-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(99,102,241,0.45);
+}
+
+/* ===== TABLE STYLE ===== */
+.ant-table {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background: #f8fafc !important;
+  color: #1e293b !important;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: rgba(99,102,241,0.06) !important;
+  transition: all 0.2s ease;
+}
+
+/* ===== TAG STYLE ===== */
+.ant-tag {
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* ===== SMALL BUTTON (LOCK / UNLOCK) ===== */
+.ant-btn-sm {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.ant-btn-sm:hover {
+  transform: scale(1.08);
+}
+
+/* ===== ACTION ICON ===== */
+.ant-table .anticon {
+  transition: all 0.2s ease;
+}
+
+.ant-table .anticon:hover {
+  transform: scale(1.2);
+}
+
+/* ===== PAGINATION ===== */
+.ant-pagination {
+  padding: 16px 24px;
+}
+
+.ant-pagination-item {
+  border-radius: 10px !important;
+}
+
+.ant-pagination-item-active {
+  background: linear-gradient(135deg,#6366f1,#8b5cf6) !important;
+  border: none !important;
+}
+
+.ant-pagination-item-active a {
+  color: #fff !important;
+}
+
+/* ===== INDEX BORDER FIX ===== */
+.ant-table-row-index {
+  font-weight: 600;
+}
+
+/* ===== BADGE ===== */
+.ant-badge-count {
+  box-shadow: 0 0 0 2px #fff;
+  font-weight: 600;
+}
+
+/* ===== AVATAR HOVER ===== */
+.ant-avatar {
+  transition: all 0.2s ease;
+}
+
+.ant-avatar:hover {
+  transform: scale(1.08);
+}

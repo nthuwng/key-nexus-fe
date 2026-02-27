@@ -5,8 +5,6 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-console.log("Axios instance created with baseURL:", instance.defaults.baseURL);
-
 // Các endpoint KHÔNG gắn Authorization
 const AUTH_SKIP = ["/login", "/register"];
 

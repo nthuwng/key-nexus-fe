@@ -50,10 +50,10 @@ const TableRoles = () => {
       title: "Name",
       dataIndex: "name",
     },
-    {
-      title: "Permissions",
-      dataIndex: "permissions",
-    },
+    // {
+    //   title: "Permissions",
+    //   dataIndex: "permissions",
+    // },
     {
       title: "Created At",
       dataIndex: "createdAt",

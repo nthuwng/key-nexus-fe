@@ -6,11 +6,26 @@ import { useCurrentApp } from "@/components/context/app.context";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import UserPage from "@/pages/admin/UserPage";
 import RolesPage from "@/pages/admin/RolesPage";
+import { useEffect, useState } from "react";
+import FullScreenLoading from "@/components/common/FullScreenLoading";
 
 const AdminRoutes = () => {
   const { user } = useCurrentApp();
-
   console.log("AdminRoutes - user:", user);
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <FullScreenLoading />;
+  }
+
   return (
     <Routes>
       <Route

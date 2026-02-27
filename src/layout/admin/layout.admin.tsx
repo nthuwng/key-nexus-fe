@@ -18,9 +18,12 @@ import {
   SettingOutlined,
   BellOutlined,
   SafetyOutlined,
+  HomeOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import { useCurrentApp } from "@/components/context/app.context";
 import { useState } from "react";
+import "./layout.admin.css";
 
 const { Sider, Content, Header } = Layout;
 
@@ -82,32 +85,101 @@ const LayoutAdmin = () => {
 
   // ===== POPOVER USER =====
   const popoverContent = (
-    <div style={{ minWidth: 200 }}>
-      <div style={{ fontWeight: 600 }}>
-        {user?.fullName || user?.username || user?.email}
+    <div
+      style={{
+        width: 240,
+        background: "#fff",
+        borderRadius: 16,
+        overflow: "hidden",
+        boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: "11px 13px",
+          background: "linear-gradient(135deg, #20214b, #2f3175)",
+          color: "#fff",
+          textAlign: "center",
+        }}
+      >
+        <div style={{ fontWeight: 700, fontSize: 16 }}>
+          {user?.fullName || "I'm Super Admin"}
+        </div>
+        <div style={{ fontSize: 12, opacity: 0.9 }}>{user?.email}</div>
       </div>
-      <div style={{ fontSize: 12, color: "#888" }}>{user?.email}</div>
 
-      <Divider style={{ margin: "8px 0" }} />
+      {/* Actions */}
+      <div style={{ padding: "6px 0", textAlign: "center" }}>
+        <div
+          onClick={() => navigate("/")}
+          style={{
+            padding: "8px 0",
+            cursor: "pointer",
+            fontWeight: 500,
+            fontSize: 14,
+            transition: "all 0.2s ease",
+            borderBottom: "1px solid #f0f0f0",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.08)";
+            e.currentTarget.style.fontWeight = "600";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.fontWeight = "500";
+          }}
+        >
+          Trang chủ
+        </div>
 
-      <Button
-        type="text"
-        block
-        icon={<UserOutlined />}
-        onClick={() => navigate("/profile")}
-      >
-        Profile
-      </Button>
+        <div
+          onClick={() => navigate("/profile")}
+          style={{
+            padding: "8px 0",
+            cursor: "pointer",
+            fontWeight: 500,
+            fontSize: 14,
+            transition: "all 0.2s ease",
+            borderBottom: "1px solid #f0f0f0",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.08)";
+            e.currentTarget.style.fontWeight = "600";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.fontWeight = "500";
+          }}
+        >
+          Thông tin cá nhân
+        </div>
 
-      <Button
-        type="text"
-        danger
-        block
-        icon={<LogoutOutlined />}
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
+        <div
+          onClick={() => {
+            localStorage.clear();
+            setUser(null);
+            setIsAuthenticated(false);
+            navigate("/");
+          }}
+          style={{
+            padding: "8px 0",
+            cursor: "pointer",
+            fontWeight: 600,
+            fontSize: 14,
+            color: "#ff4d4f",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.08)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+          }}
+        >
+          Đăng xuất
+        </div>
+      </div>
     </div>
   );
 
@@ -120,15 +192,19 @@ const LayoutAdmin = () => {
     >
       {/* ===== SIDEBAR ===== */}
       <Sider
-        width={220}
-        collapsedWidth={70}
+        width={240}
+        collapsedWidth={80}
         collapsible
         collapsed={collapsed}
         trigger={null}
-        style={{ background: "#001529" }}
+        style={{
+          background: "linear-gradient(180deg, #0b1020, #141a33)",
+          position: "relative",
+        }}
+        className="admin-sider"
       >
-        {/* Logo */}
-        <div
+        {/* ===== LOGO ===== */}
+        {/* <div
           style={{
             height: 64,
             display: "flex",
@@ -137,26 +213,93 @@ const LayoutAdmin = () => {
             color: "#fff",
             fontSize: 18,
             fontWeight: 700,
-            borderBottom: "1px solid rgba(255,255,255,0.1)",
+            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            letterSpacing: 1,
           }}
         >
           {collapsed ? "AD" : "System Management"}
-        </div>
+        </div> */}
 
+        {/* ===== USER INFO ===== */}
+        {isAuthenticated && (
+          <div
+            style={{
+              padding: collapsed ? "16px 0" : "20px 16px",
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                justifyContent: collapsed ? "center" : "flex-start",
+              }}
+            >
+              <Avatar
+                size={40}
+                style={{
+                  cursor: "pointer",
+                  background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
+                  boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
+                  fontWeight: 600,
+                }}
+              >
+                {(
+                  user?.username?.charAt(0) ||
+                  user?.email?.charAt(0) ||
+                  "U"
+                ).toUpperCase()}
+              </Avatar>
+
+              {!collapsed && (
+                <div style={{ lineHeight: 1.3 }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      color: "#fff",
+                      fontSize: 14,
+                    }}
+                  >
+                    {user?.fullName || "Super Admin"}
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "rgba(255,255,255,0.6)",
+                    }}
+                  >
+                    {user?.email}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ===== MENU TOP ===== */}
         <Menu
+          className="admin-menu"
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname]}
           items={menuTop}
           onClick={handleMenuClick}
+          style={{
+            background: "transparent",
+            borderRight: "none",
+            marginTop: 8,
+          }}
         />
 
+        {/* ===== MENU BOTTOM ===== */}
         <div
           style={{
             position: "absolute",
             bottom: 0,
             width: "100%",
-            borderTop: "1px solid rgba(255,255,255,0.1)",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
           }}
         >
           <Menu
@@ -165,7 +308,34 @@ const LayoutAdmin = () => {
             selectable={false}
             items={menuBottom}
             onClick={handleMenuClick}
+            style={{
+              background: "transparent",
+              borderRight: "none",
+            }}
           />
+
+          {/* ===== NÚT MỞ LẠI SIDEBAR ===== */}
+          {collapsed && (
+            <div
+              onClick={() => setCollapsed(false)}
+              style={{
+                height: 48,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                borderTop: "1px solid rgba(255,255,255,0.08)",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <RightOutlined
+                style={{
+                  color: "#fff",
+                  fontSize: 18,
+                }}
+              />
+            </div>
+          )}
         </div>
       </Sider>
 
@@ -173,6 +343,7 @@ const LayoutAdmin = () => {
       <Layout>
         {/* ===== HEADER ===== */}
         <Header
+        className="admin-header"
           style={{
             background: "#ffffff",
             padding: "0 24px",
@@ -198,7 +369,7 @@ const LayoutAdmin = () => {
                 fontSize: 16,
               }}
             >
-              Admin
+              System Management
             </span>
           </Space>
 
@@ -223,10 +394,8 @@ const LayoutAdmin = () => {
                   size={40}
                   style={{
                     cursor: "pointer",
-                    background:
-                      "linear-gradient(135deg,#6366f1,#8b5cf6)",
-                    boxShadow:
-                      "0 6px 16px rgba(0,0,0,0.25)",
+                    background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
+                    boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
                     fontWeight: 600,
                   }}
                 >

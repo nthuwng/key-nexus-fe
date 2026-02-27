@@ -22,31 +22,32 @@ const RegisterPage = () => {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
-      message.error("Vui lòng nhập đầy đủ thông tin");
+      messageApi.error("Vui lòng nhập đầy đủ thông tin đăng ký");
       return;
     }
 
     if (password !== confirmPassword) {
-      message.error("Mật khẩu không khớp");
+      messageApi.error("Mật khẩu không khớp");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await registerAPI(email, password);
+      const res = await registerAPI();
 
       if (res && res.data) {
-        message.success("Đăng ký thành công");
+        messageApi.success("Đăng ký thành công");
         navigate("/login");
       } else {
-        message.error("Đăng ký thất bại");
+        messageApi.error("Đăng ký thất bại");
       }
     } catch (error: any) {
-      message.error(error?.message || "Đăng ký không thành công");
+      messageApi.error(error?.message || "Đăng ký không thành công");
     } finally {
       setLoading(false);
     }

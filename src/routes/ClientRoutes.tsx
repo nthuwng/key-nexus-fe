@@ -5,6 +5,7 @@ import NotFoundPage from "@/components/common/error";
 import ProfilePage from "@/pages/client/ProfilePage";
 import MousePage from "@/pages/client/MousePage";
 import KeyboardPage from "@/pages/client/KeyboardPage";
+import MouseDetailPage from "@/components/user/MousePage/MouseDetailPage";
 
 const ClientRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const ClientRoutes = () => {
         <Route index element={<HomePage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="mouse" element={<MousePage />} />
+        <Route path="mouse/:id" element={<MouseDetailPage />} />
         <Route path="keyboard" element={<KeyboardPage />} />
       </Route>
 

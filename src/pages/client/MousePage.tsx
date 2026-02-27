@@ -156,7 +156,6 @@ const MousePage = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   fontWeight: 600,
-                  
                 }}
               >
                 <span>Bộ lọc tìm kiếm</span>
@@ -296,13 +295,14 @@ const MousePage = () => {
               <Col span={6} key={item.id}>
                 <Card
                   hoverable
-                  bordered={false}
+                  onClick={() => navigate(`/mouse/${item.id}`)}
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
                     boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
                     border: "1px solid rgba(0,0,0,0.2)",
                     transition: "all 0.25s",
+                    cursor: "pointer",
                   }}
                   bodyStyle={{ padding: 16 }}
                   cover={
@@ -314,6 +314,15 @@ const MousePage = () => {
                         alignItems: "center",
                         justifyContent: "center",
                         padding: 10,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.08)";
+                        e.currentTarget.style.boxShadow =
+                          "0 4px 12px rgba(0,0,0,0.08)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                        e.currentTarget.style.boxShadow = "none";
                       }}
                     >
                       <img

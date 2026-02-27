@@ -11,7 +11,7 @@ export const fetchUserAPI = () => {
 };
 
 export const updateUserStatusAPI = (id: string, status: string) => {
-    const urlBackend = `http://localhost:8080/api/v1/users/${id}/status`
+    const urlBackend = `/api/v1/users/${id}/status`
   return axios.patch(urlBackend, {
     status,
   });

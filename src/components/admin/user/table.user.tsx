@@ -14,6 +14,7 @@ import {
 } from "@ant-design/pro-components";
 import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
+import "./table.user.css";
 
 const TableUser = () => {
   const actionRef = useRef<ActionType>(null);
@@ -89,26 +90,35 @@ const TableUser = () => {
         const isSuperAdmin = record.roleId?.name === "SUPER_ADMIN";
 
         return (
-          <Space>
-            <Tag color={isActive ? "green" : "red"}>{record.status}</Tag>
+          <Space size={10}>
+            <div
+              style={{
+                padding: "6px 14px",
+                borderRadius: 999,
+                fontWeight: 600,
+                fontSize: 13,
+                background: isActive
+                  ? "linear-gradient(135deg,#dcfce7,#bbf7d0)"
+                  : "linear-gradient(135deg,#fee2e2,#fecaca)",
+                color: isActive ? "#166534" : "#991b1b",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+              }}
+            >
+              {record.status}
+            </div>
 
-            {isActive ? (
-              <Button
-                size="small"
-                danger
-                icon={<LockOutlined />}
-                disabled={isSuperAdmin}
-                onClick={() => handleToggleStatus(record)}
-              />
-            ) : (
-              <Button
-                size="small"
-                type="primary"
-                icon={<UnlockOutlined />}
-                disabled={isSuperAdmin}
-                onClick={() => handleToggleStatus(record)}
-              />
-            )}
+            <Button
+              size="small"
+              type={isActive ? "default" : "primary"}
+              danger={isActive}
+              icon={isActive ? <LockOutlined /> : <UnlockOutlined />}
+              disabled={isSuperAdmin}
+              onClick={() => handleToggleStatus(record)}
+              style={{
+                borderRadius: 8,
+                transition: "all 0.2s ease",
+              }}
+            />
           </Space>
         );
       },
@@ -119,12 +129,35 @@ const TableUser = () => {
       render: (_, record) => {
         const roleName = record.roleId?.name || "No Role";
 
-        let color = "default";
+        let bg = "#f3f4f6";
+        let color = "#374151";
 
-        if (roleName === "SUPER_ADMIN") color = "purple";
-        else if (roleName === "USER") color = "green";
+        if (roleName === "SUPER_ADMIN") {
+          bg = "linear-gradient(135deg,#ede9fe,#ddd6fe)";
+          color = "#5b21b6";
+        }
 
-        return <Tag color={color}>{roleName}</Tag>;
+        if (roleName === "USER") {
+          bg = "linear-gradient(135deg,#dcfce7,#bbf7d0)";
+          color = "#166534";
+        }
+
+        return (
+          <div
+            style={{
+              display: "inline-block",
+              padding: "6px 16px",
+              borderRadius: 999,
+              fontWeight: 600,
+              fontSize: 13,
+              background: bg,
+              color: color,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            }}
+          >
+            {roleName}
+          </div>
+        );
       },
     },
     {
@@ -167,7 +200,7 @@ const TableUser = () => {
       columns={columns}
       actionRef={actionRef}
       cardBordered
-      request={async (params,sort, filter) => {
+      request={async (params, sort, filter) => {
         const res = await fetchUserAPI();
         if (res.data) {
           setMeta(res.data.meta);

@@ -115,31 +115,107 @@ const AppHeader = () => {
     </div>
   );
 
+  const isSuperAdmin = user?.roleId?.name === "SUPER_ADMIN";
   // ===== Popover user =====
   const popoverContent = (
-    <div style={{ minWidth: 180 }}>
-      <div style={{ fontWeight: 600 }}>{user?.fullName || user?.email}</div>
-      <div style={{ fontSize: 12, color: "#888" }}>{user?.email}</div>
-
-      <Divider style={{ margin: "8px 0" }} />
-
-      <Button type="text" block onClick={() => navigate("/profile")}>
-        Thông tin cá nhân
-      </Button>
-
-      <Button
-        type="text"
-        danger
-        block
-        onClick={() => {
-          localStorage.clear();
-          setUser(null);
-          setIsAuthenticated(false);
-          navigate("/");
+    <div
+      style={{
+        width: 240,
+        background: "#fff",
+        borderRadius: 16,
+        overflow: "hidden",
+        boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: "11px 13px",
+          background: "linear-gradient(135deg, #20214b, #2f3175)",
+          color: "#fff",
+          textAlign: "center",
         }}
       >
-        Đăng xuất
-      </Button>
+        <div style={{ fontWeight: 700, fontSize: 16 }}>
+          {user?.fullName || "I'm Super Admin"}
+        </div>
+        <div style={{ fontSize: 12, opacity: 0.9 }}>{user?.email}</div>
+      </div>
+
+      {/* Actions */}
+      <div style={{ padding: "6px 0", textAlign: "center" }}>
+        {/* Admin - chỉ SUPER_ADMIN thấy */}
+        {isSuperAdmin && (
+          <div
+            onClick={() => navigate("/admin")}
+            style={{
+              padding: "8px 0",
+              cursor: "pointer",
+              fontWeight: 500,
+              fontSize: 14,
+              transition: "all 0.2s ease",
+              borderBottom: "1px solid #f0f0f0",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.08)";
+              e.currentTarget.style.fontWeight = "600";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.fontWeight = "500";
+            }}
+          >
+            Trang Admin
+          </div>
+        )}
+
+        <div
+          onClick={() => navigate("/profile")}
+          style={{
+            padding: "8px 0",
+            cursor: "pointer",
+            fontWeight: 500,
+            fontSize: 14,
+            transition: "all 0.2s ease",
+            borderBottom: "1px solid #f0f0f0",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.08)";
+            e.currentTarget.style.fontWeight = "600";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.fontWeight = "500";
+          }}
+        >
+          Thông tin cá nhân
+        </div>
+
+        <div
+          onClick={() => {
+            localStorage.clear();
+            setUser(null);
+            setIsAuthenticated(false);
+            navigate("/");
+          }}
+          style={{
+            padding: "8px 0",
+            cursor: "pointer",
+            fontWeight: 600,
+            fontSize: 14,
+            color: "#ff4d4f",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.08)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+          }}
+        >
+          Đăng xuất
+        </div>
+      </div>
     </div>
   );
 
@@ -151,7 +227,7 @@ const AppHeader = () => {
       style={{
         height: HEADER_HEIGHT,
         lineHeight: `${HEADER_HEIGHT}px`,
-        background: "#20214b",
+        background: "linear-gradient(135deg, #20214b, #2f3175)",
         padding: 0,
         position: "fixed",
         top: 0,

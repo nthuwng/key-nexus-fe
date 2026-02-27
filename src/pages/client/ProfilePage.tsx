@@ -176,12 +176,6 @@ const ProfilePage = () => {
 
                   <Text strong>Phone Number</Text>
                   <Text>{user.phone || "—"}</Text>
-
-                  <Text strong>Status</Text>
-                  <Text>{user.status}</Text>
-
-                  <Text strong>Role</Text>
-                  <Text>{user.roleId?.name}</Text>
                 </div>
               ) : (
                 <Text type="secondary">Chưa đăng nhập</Text>

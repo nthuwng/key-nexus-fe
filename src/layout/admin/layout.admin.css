@@ -1,0 +1,90 @@
+/* ===============================
+   LEVEL BOSS SIDEBAR
+================================= */
+
+/* ===== SIDEBAR ===== */
+.admin-sider {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(59, 130, 246, 0.08),
+      transparent 40%
+    ),
+    linear-gradient(180deg, #070d1a, #0c1629);
+
+  box-shadow: none;   /* xóa bóng đổ */
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ===== MENU BASE ===== */
+.admin-menu .ant-menu {
+  background: transparent !important;
+}
+
+.admin-menu .ant-menu-item {
+  margin: 8px 0;
+  padding-left: 28px;
+  height: 48px;
+  border-radius: 12px 12px 12px 12px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== HOVER ===== */
+.admin-menu .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  transform: translateX(6px);
+}
+
+/* ===== ACTIVE ===== */
+.admin-menu .ant-menu-item-selected {
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.35),
+    rgba(59, 130, 246, 0.08)
+  ) !important;
+  font-weight: 600;
+  position: relative;
+  transform: translateX(6px);
+}
+
+/* ===== RIGHT GLOW BAR ===== */
+.admin-menu .ant-menu-item-selected::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 6px;
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  border-radius: 8px 0 0 8px;
+  box-shadow:
+    0 0 12px rgba(59, 130, 246, 0.9),
+    0 0 24px rgba(59, 130, 246, 0.5);
+}
+
+/* ===== ICON EFFECT ===== */
+.admin-menu .ant-menu-item .anticon {
+  transition: all 0.3s ease;
+}
+
+.admin-menu .ant-menu-item-selected .anticon {
+  color: #60a5fa;
+  transform: scale(1.15);
+}
+
+/* ===== TEXT ===== */
+.admin-menu .ant-menu-title-content {
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+.admin-menu .ant-menu-item-selected .ant-menu-title-content {
+  color: #ffffff;
+}
+
+/* ===== REMOVE ANT DEFAULT ===== */
+.admin-menu .ant-menu-item::after {
+  display: none !important;
+}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input, Button, Typography, message } from "antd";
+import { Input, Button, Typography, message, Form} from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -18,13 +18,14 @@ const LoginPage = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
   const { setUser, setIsAuthenticated } = useCurrentApp();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      message.error("Vui lòng nhập đầy đủ thông tin");
+      messageApi.error("Vui lòng nhập đầy đủ thông tin đăng nhập");
       return;
     }
 
@@ -41,19 +42,23 @@ const LoginPage = () => {
         setUser(user);
         setIsAuthenticated(true);
 
-        message.success("Đăng nhập thành công");
-        navigate("/");
+        messageApi.success("Đăng nhập thành công");
+        setTimeout(() => {
+          navigate("/");
+        }, 800);
       } else {
-        message.error("Đăng nhập thất bại");
+        messageApi.error("Đăng nhập thất bại");
       }
     } catch (error: any) {
-      message.error(error?.message || "Sai tài khoản hoặc mật khẩu");
+      messageApi.error(error?.messageApi || "Sai tài khoản hoặc mật khẩu");
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <>
+    {contextHolder}
     <div
       style={{
         minHeight: "100vh",
@@ -121,7 +126,10 @@ const LoginPage = () => {
               zIndex: 1,
             }}
           />
-          <Title level={2} style={{ color: "#fff", marginTop: 40,marginBottom: 16 }}>
+          <Title
+            level={2}
+            style={{ color: "#fff", marginTop: 40, marginBottom: 16 }}
+          >
             Key Nexus
           </Title>
 
@@ -315,6 +323,7 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

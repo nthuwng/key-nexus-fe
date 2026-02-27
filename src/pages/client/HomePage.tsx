@@ -1,21 +1,23 @@
+import { Carousel } from "antd";
 import { useNavigate } from "react-router-dom";
-
+ 
 const HomePage = () => {
   const navigate = useNavigate();
   return (
-    <div>
+    <div style={{
+          background: "#bcc0c56d",}}>
       <div
         style={{
           background: "#E6F0FF",
           color: "#070707",
-          fontSize: "13px",
+          fontSize: "15px",
           borderBottom: "1px solid #86bae5",
         }}
       >
         <div
           style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
+         
+          
             padding: "8px 16px",
             display: "flex",
             justifyContent: "space-between",
@@ -30,51 +32,8 @@ const HomePage = () => {
           <span>📞 Hỗ trợ 24/7</span>
         </div>
       </div>
-      {/* ===== Banner dọc trái ===== */}
-      <div
-        style={{
-          position: "fixed",
-          left: "10px",
-          top: "120px",
-          width: "120px",
-          height: "500px",
-          background: "linear-gradient(180deg,#ff4d4f,#cf1322)",
-          borderRadius: "12px",
-          zIndex: 1000,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          fontWeight: "bold",
-          textAlign: "center",
-          padding: "10px",
-        }}
-      >
-        HAPPY NEW YEAR
-      </div>
-
-      {/* ===== Banner dọc phải ===== */}
-      <div
-        style={{
-          position: "fixed",
-          right: "10px",
-          top: "120px",
-          width: "120px",
-          height: "500px",
-          background: "linear-gradient(180deg,#faad14,#d48806)",
-          borderRadius: "12px",
-          zIndex: 1000,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          fontWeight: "bold",
-          textAlign: "center",
-          padding: "10px",
-        }}
-      >
-        HAPPY NEW YEAR
-      </div>
+    
+      
       {/* ===== Floating Buttons (2 hình tròn) ===== */}
       <div
         style={{
@@ -134,10 +93,10 @@ const HomePage = () => {
       </div>
 
       {/* Nội dung Home */}
-      <div style={{ padding: "24px", maxWidth: "1200px", margin: "0 auto" }}>
-        {/* ===== Danh mục sản phẩm ===== */}
-        <div style={{ marginTop: "20px" }}>
-          <h2 style={{ marginBottom: "20px" }}>Danh mục sản phẩm</h2>
+      <div style={{  maxWidth: "90%", margin: "0 auto" }}>
+      
+      
+         
 
           <div
             style={{
@@ -148,26 +107,7 @@ const HomePage = () => {
             }}
           >
             {[
-              "Laptop",
-              "PC",
-              "Màn hình",
-              "Mainboard",
-              "CPU",
-              "VGA",
-              "RAM",
-              "Ổ cứng",
-              "Case",
-              "Tản nhiệt",
-              "Nguồn",
-              "Bàn phím",
-              "Chuột",
-              "Ghế",
-              "Tai nghe",
-              "Loa",
-              "Console",
-              "Phụ kiện",
-              "Thiết bị VP",
-              "Sạc DP",
+             
             ].map((item, index) => (
               <div
                 key={index}
@@ -206,7 +146,7 @@ const HomePage = () => {
               </div>
             ))}
           </div>
-        </div>
+       
 
         {/* Banner trên */}
         <div
@@ -214,30 +154,78 @@ const HomePage = () => {
             display: "grid",
             gridTemplateColumns: "2fr 1fr",
             gap: "16px",
-            marginTop: "24px",
+            marginTop: "20px",
             marginBottom: "16px",
+            width: "100%",
+            maxWidth: "100%",
+            margin: "20px auto",
           }}
-        >
-          {/* Banner lớn */}
-          <div
-            style={{
-              height: "280px",
-              borderRadius: "8px",
-              background: "#d9e8ff",
-            }}
-          />
-
-          {/* 2 banner nhỏ */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateRows: "1fr 1fr",
-              gap: "16px",
-            }}
-          >
-            <div style={{ borderRadius: "8px", background: "#ffd6d6" }} />
-            <div style={{ borderRadius: "8px", background: "#ffe9b3" }} />
-          </div>
+        >   
+      <div style={{ overflow: "hidden", borderRadius: "8px", }}>
+       <Carousel
+       autoplay
+  autoplaySpeed={2000}
+  pauseOnHover={false}
+  infinite
+  arrows
+    >
+      <div >
+        <img
+          src="src/assets/baner_Imges/1.jpg"
+          alt="banner1"
+          style={{
+            width: "100%",
+            height: "400px",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+ <div>
+        <img
+          src="src/assets/baner_Imges/5.jpg"
+          alt="banner5"
+          style={{
+            width: "100%",
+            height: "400px",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+      <div>
+        <img
+          src="src/assets/baner_Imges/6.jpg"
+          alt="banner6"
+          style={{
+            width: "100%",
+            height: "400px",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+    </Carousel>
+      </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+           <img
+          src="src/assets/baner_Imges/2.jpg"
+          alt="banner2"
+          style={{
+            width: "100%",
+            height: "195px",
+            objectFit: "cover"
+          }}
+        />
+         <img
+          src="src/assets/baner_Imges/10.jpg"
+          alt="banner10"
+          style={{
+          
+            width: "100%",
+            height: "195px",
+            objectFit: "cover"
+          }}
+        />
+        </div>
+              
         </div>
 
         {/* ===== 3 banner nhỏ + text giữa ===== */}
@@ -252,29 +240,46 @@ const HomePage = () => {
               display: "grid",
               gridTemplateColumns: "1fr 1fr 1fr",
               gap: "16px",
+              marginTop: "20px",
+              marginBottom: "16px",
+              width: "100%",
+              maxWidth: "100%",
+              margin: "20px auto",
             }}
           >
-            <div
-              style={{
-                height: "140px",
-                borderRadius: "8px",
-                background: "#e0ffd6",
-              }}
-            />
-            <div
-              style={{
-                height: "140px",
-                borderRadius: "8px",
-                background: "#d6f0ff",
-              }}
-            />
-            <div
-              style={{
-                height: "140px",
-                borderRadius: "8px",
-                background: "#f2d6ff",
-              }}
-            />
+           <div>
+        <img
+          src="src/assets/baner_Imges/7.png"
+          alt="banner7"
+          style={{
+            width: "100%",
+            height: "200px",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+      <div>
+        <img
+          src="src/assets/baner_Imges/9.png"
+          alt="banner9"
+          style={{
+            width: "100%",
+            height: "200px",
+            objectFit: "cover"
+          }}
+        />
+      </div>
+            <div>
+        <img
+          src="src/assets/baner_Imges/8.png"
+          alt="banner8"
+          style={{
+            width: "100%",
+            height: "200px",
+            objectFit: "cover"
+          }}
+        />
+      </div>
           </div>
 
           {/* Text giữa cụm */}
@@ -289,11 +294,15 @@ const HomePage = () => {
               fontSize: "18px",
               color: "#333",
               pointerEvents: "none",
+              
+          
             }}
           >
+            <span style={{ fontSize: "30px", fontWeight: "bold"}}>
             MUA NGAY – GIÁ CỰC HỜI
+            </span>
             <br />
-            <span style={{ fontSize: "14px", fontWeight: 400 }}>
+            <span style={{ fontSize: "20px", fontWeight: 400 }}>
               FREESHIP TOÀN QUỐC
             </span>
           </div>
@@ -311,55 +320,38 @@ const HomePage = () => {
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: "16px",
+              marginTop: "95px",
+              marginBottom: "16px",
+              width: "100%",
+              maxWidth: "100%",
+              margin: "20px auto",
             }}
           >
             {/* Banner 1 */}
-            <div
-              style={{
-                height: "220px",
-                top: "2000%",
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #1677ff, #69b1ff)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontWeight: "bold",
-                fontSize: "22px",
-                textAlign: "center",
-              }}
-            >
-              <div>
-                NÂNG CẤP GÓC CHIẾN GAME
-                <br />
-                <span style={{ fontSize: "14px", fontWeight: 400 }}>
-                  Chuột & Bàn phím Gaming chính hãng
-                </span>
-              </div>
+            <div>
+               <img
+          src="src/assets/baner_Imges/12.jpg"
+          alt="banner12"
+          style={{
+            width: "100%",
+            height: "200px",
+            objectFit: "cover"
+          }}
+        />
+              
             </div>
 
             {/* Banner 2 */}
-            <div
-              style={{
-                height: "220px",
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #ff4d4f, #ff9c6e)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontWeight: "bold",
-                fontSize: "22px",
-                textAlign: "center",
-              }}
-            >
-              <div>
-                SALE LÊN ĐẾN 40%
-                <br />
-                <span style={{ fontSize: "14px", fontWeight: 400 }}>
-                  Freeship toàn quốc
-                </span>
-              </div>
+            <div>
+              <img
+          src="src/assets/baner_Imges/11.png"
+          alt="banner11"
+          style={{
+            width: "100%",
+            height: "200px",
+            objectFit: "cover"
+          }}
+        />
             </div>
           </div>
           {/* ===== Chuột bán chạy ===== */}
@@ -410,6 +402,7 @@ const HomePage = () => {
               }}
             >
               {[1, 2, 3, 4, 5].map((item) => (
+                
                 <div
                   key={item}
                   style={{
