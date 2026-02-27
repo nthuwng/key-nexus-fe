@@ -3,9 +3,9 @@ import LayoutClient from "@/layout/client/layout.client";
 import HomePage from "@/pages/client/HomePage";
 import NotFoundPage from "@/components/common/error";
 import ProfilePage from "@/pages/client/ProfilePage";
-import MousePage from "@/pages/client/MousePage";
+import MousePage from "@/pages/client/mouse/MousePage";
 import KeyboardPage from "@/pages/client/KeyboardPage";
-import MouseDetailPage from "@/components/client/mouse/MouseDetailPage";
+import MouseDetailPage from "@/pages/client/mouse/MouseDetailPage";
 
 const ClientRoutes = () => {
   return (
