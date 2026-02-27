@@ -5,7 +5,7 @@ import NotFoundPage from "@/components/common/error";
 import ProfilePage from "@/pages/client/ProfilePage";
 import MousePage from "@/pages/client/MousePage";
 import KeyboardPage from "@/pages/client/KeyboardPage";
-import MouseDetailPage from "@/components/user/MousePage/MouseDetailPage";
+import MouseDetailPage from "@/components/client/mouse/MouseDetailPage";
 
 const ClientRoutes = () => {
   return (
