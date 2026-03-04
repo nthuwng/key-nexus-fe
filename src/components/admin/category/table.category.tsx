@@ -14,10 +14,11 @@ import {
 import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
 import CategoryDetail from "./category.detail";
-import { fetchCategoryAPI } from "@/service/admim/fetchAPI";
+
 import CreateCategory from "./category.create";
 import DeleteCategory from "./category.delete";
 import UpdateCategory from "./category.update";
+import { fetchCategoryAPI } from "@/services/admin/api.admin";
 
 const TableCategory = () => {
   //Category detail
@@ -25,20 +26,19 @@ const TableCategory = () => {
   const [dataViewDetail, setDataViewDetail] = useState<ICategory | null>(null);
 
   //Category Create
-  const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
+  const [openModalCreate, setOpenModelCreate] = useState<boolean>(false);
   const actionRef = useRef<ActionType>(null);
 
   //Product Update
-    const [openModalUpdate, setOpenModelUpdate]= useState<boolean>(false)
-     const [dataUpdate,setDataUpdate] =useState<ICategory| null>(null);
+  const [openModalUpdate, setOpenModelUpdate] = useState<boolean>(false);
+  const [dataUpdate, setDataUpdate] = useState<ICategory | null>(null);
 
   //Product Delete
-  
-    const [openModalDelete, setOpenModelDelete]= useState<boolean>(false)
-    const [dataDelete,setDataDelete] =useState<ICategory| null>(null);
-    
-  const [meta, setMeta] = useState({
 
+  const [openModalDelete, setOpenModelDelete] = useState<boolean>(false);
+  const [dataDelete, setDataDelete] = useState<ICategory | null>(null);
+
+  const [meta, setMeta] = useState({
     current: 1,
     pageSize: 5,
     pages: 0,
@@ -72,7 +72,7 @@ const TableCategory = () => {
       title: "Name",
       dataIndex: "name",
     },
-   {
+    {
       title: "Created At",
       dataIndex: "createdAt",
       valueType: "dateTime",
@@ -81,15 +81,14 @@ const TableCategory = () => {
       title: "Action",
       hideInSearch: true,
       width: 120,
-      render: (_,entity) => (
+      render: (_, entity) => (
         <Space size="middle">
           <Tooltip title="Edit">
             <EditTwoTone
-             onClick={() => 
-        {
-            setDataUpdate(entity)
-            setOpenModelUpdate(true)
-                        }}
+              onClick={() => {
+                setDataUpdate(entity);
+                setOpenModelUpdate(true);
+              }}
               twoToneColor="#faad14"
               style={{
                 cursor: "pointer",
@@ -99,26 +98,25 @@ const TableCategory = () => {
           </Tooltip>
 
           <Tooltip title="Delete">
-             <DeleteTwoTone
+            <DeleteTwoTone
               twoToneColor="#ff4d4f"
               style={{
                 cursor: "pointer",
                 fontSize: 18,
               }}
-                onClick={() => 
-        {
-            setDataDelete(entity)
-            setOpenModelDelete(true)
-                        }}
+              onClick={() => {
+                setDataDelete(entity);
+                setOpenModelDelete(true);
+              }}
             />
           </Tooltip>
         </Space>
       ),
     },
   ];
-const refreshTable= () => {
+  const refreshTable = () => {
     actionRef.current?.reload();
-}
+  };
   return (
     <>
       <ProTable<ICategory>
@@ -169,10 +167,7 @@ const refreshTable= () => {
             key="add"
             icon={<PlusOutlined />}
             type="primary"
-            onClick={() => 
-              
-              setOpenModelCreate(true)
-            }
+            onClick={() => setOpenModelCreate(true)}
           >
             Add New
           </Button>,
@@ -187,25 +182,25 @@ const refreshTable= () => {
       />
 
       <CreateCategory
-      openModalCreate={openModalCreate}
-      setOpenModelCreate={setOpenModelCreate}
-      refreshTable={refreshTable}
+        openModalCreate={openModalCreate}
+        setOpenModelCreate={setOpenModelCreate}
+        refreshTable={refreshTable}
       />
-        <UpdateCategory
-            openModalUpdate={openModalUpdate}
-            setOpenModelUpdate={setOpenModelUpdate}
-            refreshTable={refreshTable}
-            dataUpdate={dataUpdate}
-           setDataUpdate={setDataUpdate}
-            />
-      
-       <DeleteCategory
-            openModalDelete={openModalDelete}
-            setOpenModelDelete={setOpenModelDelete}
-            refreshTable={refreshTable}
-            dataDelete={dataDelete}
-           setDataDelete={setDataDelete}
-            />
+      <UpdateCategory
+        openModalUpdate={openModalUpdate}
+        setOpenModelUpdate={setOpenModelUpdate}
+        refreshTable={refreshTable}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
+      />
+
+      <DeleteCategory
+        openModalDelete={openModalDelete}
+        setOpenModelDelete={setOpenModelDelete}
+        refreshTable={refreshTable}
+        dataDelete={dataDelete}
+        setDataDelete={setDataDelete}
+      />
     </>
   );
 };

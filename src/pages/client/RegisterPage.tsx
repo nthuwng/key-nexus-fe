@@ -10,7 +10,8 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
-import { registerAPI } from "@/service/auth";
+import { registerAPI } from "@/services/admin/api.admin";
+
 
 const { Title } = Typography;
 

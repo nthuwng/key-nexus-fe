@@ -1,44 +1,42 @@
-import { fetchCategoryAPI, fetchProductAPI } from "@/service/admim/fetchAPI";
+
+import { fetchProductAPI } from "@/services/admin/api.admin";
 import { Card, Col, Pagination, Row, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Mosue = () => {
-  
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [listMouse, setListMouse]=useState<IProductTable[]>([]);
-    const [current, setCurrent]=useState<number>(5);
-    const [pageSize, setPageSize]=useState<number>(5);
-    const [total, setTotal]=useState<number>(5);
-      const [loading, setLoading] = useState<boolean>(false);
+  const [listMouse, setListMouse] = useState<IProductTable[]>([]);
+  const [current, setCurrent] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(5);
+  const [total, setTotal] = useState<number>(5);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  // Lấy category
+  useEffect(() => {
+    fetchProduct();
+  }, [currentPage, pageSize]);
 
-// Lấy category
-useEffect(() => {
-  fetchProduct();
-}, [currentPage, pageSize]);
+  const fetchProduct = async () => {
+    setLoading(true);
 
-const fetchProduct = async () => {
-  setLoading(true);
+    const query = ``;
 
-  const query = ``;
+    const res = await fetchProductAPI(query);
 
-  const res = await fetchProductAPI(query);
+    if (res && res.data?.result) {
+      const filtered = res.data.result.filter((item: IProductTable) =>
+        item.categoryId?.name?.toLowerCase().includes("chuột"),
+      );
 
-  if (res && res.data?.result) {
+      setListMouse(filtered);
+      setTotal(filtered.length);
+    }
 
-    const filtered = res.data.result.filter((item: IProductTable) =>
-      item.categoryId?.name?.toLowerCase().includes("chuột")
-    );
-
-    setListMouse(filtered);
-    setTotal(filtered.length);
-  }
-
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
   const handleOnchangePage = (pagination: {
     current: number;

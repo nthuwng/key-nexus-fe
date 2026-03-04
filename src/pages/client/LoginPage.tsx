@@ -9,8 +9,8 @@ import {
   FacebookFilled,
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
-import { loginAPI } from "@/service/auth";
 import { useCurrentApp } from "@/components/context/app.context";
+import { loginAPI } from "@/services/admin/api.admin";
 
 const { Title } = Typography;
 

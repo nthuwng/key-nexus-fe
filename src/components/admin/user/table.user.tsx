@@ -1,4 +1,3 @@
-
 import {
   DeleteTwoTone,
   EditTwoTone,
@@ -14,12 +13,10 @@ import {
 } from "@ant-design/pro-components";
 import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
-import "./table.user.css";
 import UserDetail from "./user.detail";
-import { fetchUserAPI, updateUserStatusAPI } from "@/service/admim/fetchAPI";
-import CreateProduct from "../product/product.create";
 import CreateUser from "./user.create";
 import DeleteUser from "./user.delete";
+import { fetchUserAPI, updateUserStatusAPI } from "@/services/admin/api.admin";
 
 const TableUser = () => {
   const actionRef = useRef<ActionType>(null);
@@ -28,13 +25,13 @@ const TableUser = () => {
   const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
   const [dataViewDetail, setDataViewDetail] = useState<IUserTable | null>(null);
 
- //User Create
-   const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
-     
-   //Product Delete
+  //User Create
+  const [openModalCreate, setOpenModelCreate] = useState<boolean>(false);
 
-  const [openModalDelete, setOpenModelDelete]= useState<boolean>(false)
-  const [dataDelete,setDataDelete] =useState<IUserTable| null>(null);
+  //Product Delete
+
+  const [openModalDelete, setOpenModelDelete] = useState<boolean>(false);
+  const [dataDelete, setDataDelete] = useState<IUserTable | null>(null);
   const [meta, setMeta] = useState({
     current: 1,
     pageSize: 5,
@@ -158,7 +155,6 @@ const TableUser = () => {
           bg = "linear-gradient(135deg,#dcfce7,#bbf7d0)";
           color = "#166534";
         }
-        
 
         return (
           <div
@@ -206,20 +202,19 @@ const TableUser = () => {
                 cursor: "pointer",
                 fontSize: 18,
               }}
-                onClick={() => 
-        {
-            setDataDelete(entity)
-            setOpenModelDelete(true)
-                        }}
+              onClick={() => {
+                setDataDelete(entity);
+                setOpenModelDelete(true);
+              }}
             />
           </Tooltip>
         </Space>
       ),
     },
   ];
-const refreshTable= () => {
+  const refreshTable = () => {
     actionRef.current?.reload();
-}
+  };
   return (
     <>
       <ProTable<IUserTable>
@@ -270,10 +265,7 @@ const refreshTable= () => {
             key="add"
             icon={<PlusOutlined />}
             type="primary"
-            onClick={() =>
-              setOpenModelCreate(true) 
-
-            }
+            onClick={() => setOpenModelCreate(true)}
           >
             Add New
           </Button>,
@@ -287,17 +279,17 @@ const refreshTable= () => {
         setDataViewDetail={setDataViewDetail}
       />
       <CreateUser
-      openModalCreate={openModalCreate}
-      setOpenModelCreate={setOpenModelCreate}
-      refreshTable={refreshTable}
+        openModalCreate={openModalCreate}
+        setOpenModelCreate={setOpenModelCreate}
+        refreshTable={refreshTable}
       />
-        <DeleteUser
-            openModalDelete={openModalDelete}
-            setOpenModelDelete={setOpenModelDelete}
-            refreshTable={refreshTable}
-            dataDelete={dataDelete}
-           setDataDelete={setDataDelete}
-            />
+      <DeleteUser
+        openModalDelete={openModalDelete}
+        setOpenModelDelete={setOpenModelDelete}
+        refreshTable={refreshTable}
+        dataDelete={dataDelete}
+        setDataDelete={setDataDelete}
+      />
     </>
   );
 };

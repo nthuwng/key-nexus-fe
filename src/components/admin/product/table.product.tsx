@@ -1,4 +1,3 @@
-
 import {
   DeleteTwoTone,
   EditTwoTone,
@@ -16,27 +15,29 @@ import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
 import ProductDetail from "./product.detail";
 import CreateProduct from "./product.create";
-import { fetchProductAPI } from "@/service/admim/fetchAPI";
+
 import UpdateProduct from "./product.update";
 import DeleteProduct from "./product.delete";
-
+import { fetchProductAPI } from "@/services/admin/api.admin";
 
 const TableProduct = () => {
   //Product detail
   const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
-  const [dataViewDetail, setDataViewDetail] = useState<IProductTable | null>(null);
+  const [dataViewDetail, setDataViewDetail] = useState<IProductTable | null>(
+    null,
+  );
 
   //Product Create
-   const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
-      
+  const [openModalCreate, setOpenModelCreate] = useState<boolean>(false);
+
   //Product Update
-    const [openModalUpdate, setOpenModelUpdate]= useState<boolean>(false)
-     const [dataUpdate,setDataUpdate] =useState<IProductTable| null>(null);
+  const [openModalUpdate, setOpenModelUpdate] = useState<boolean>(false);
+  const [dataUpdate, setDataUpdate] = useState<IProductTable | null>(null);
 
   //Product Delete
 
-  const [openModalDelete, setOpenModelDelete]= useState<boolean>(false)
-     const [dataDelete,setDataDelete] =useState<IProductTable| null>(null);
+  const [openModalDelete, setOpenModelDelete] = useState<boolean>(false);
+  const [dataDelete, setDataDelete] = useState<IProductTable | null>(null);
   const actionRef = useRef<ActionType>(null);
   const [meta, setMeta] = useState({
     current: 1,
@@ -84,13 +85,12 @@ const TableProduct = () => {
       title: "Brand",
       dataIndex: "brand",
     },
-      {
+    {
       title: "categoryId",
-      dataIndex:"categoryId",
-       render: (_, record) => {
- return record.categoryId?.name || "";
+      dataIndex: "categoryId",
+      render: (_, record) => {
+        return record.categoryId?.name || "";
       },
-      
     },
     {
       title: "Created At",
@@ -102,20 +102,18 @@ const TableProduct = () => {
       title: "Action",
       hideInSearch: true,
       width: 120,
-      render: (_,entity) => (
+      render: (_, entity) => (
         <Space size="middle">
           <Tooltip title="Edit">
             <EditTwoTone
               twoToneColor="#faad14"
-              onClick={() => 
-        {
-            setDataUpdate(entity)
-            setOpenModelUpdate(true)
-                        }}
+              onClick={() => {
+                setDataUpdate(entity);
+                setOpenModelUpdate(true);
+              }}
               style={{
                 cursor: "pointer",
                 fontSize: 18,
-                
               }}
             />
           </Tooltip>
@@ -127,21 +125,20 @@ const TableProduct = () => {
                 cursor: "pointer",
                 fontSize: 18,
               }}
-                onClick={() => 
-        {
-            setDataDelete(entity)
-            setOpenModelDelete(true)
-                        }}
+              onClick={() => {
+                setDataDelete(entity);
+                setOpenModelDelete(true);
+              }}
             />
           </Tooltip>
         </Space>
       ),
     },
   ];
-const refreshTable= () => {
+  const refreshTable = () => {
     actionRef.current?.reload();
-}
-  
+  };
+
   return (
     <>
       <ProTable<IProductTable>
@@ -192,10 +189,7 @@ const refreshTable= () => {
             key="add"
             icon={<PlusOutlined />}
             type="primary"
-            onClick={() => 
-              setOpenModelCreate(true)
-
-            }
+            onClick={() => setOpenModelCreate(true)}
           >
             Add New
           </Button>,
@@ -203,30 +197,30 @@ const refreshTable= () => {
         search={false}
       />
       <ProductDetail
-          openViewDetail={openViewDetail}
-          setOpenViewDetail={setOpenViewDetail}
-            dataViewDetail={dataViewDetail}
-            setDataViewDetail={setDataViewDetail}
+        openViewDetail={openViewDetail}
+        setOpenViewDetail={setOpenViewDetail}
+        dataViewDetail={dataViewDetail}
+        setDataViewDetail={setDataViewDetail}
       />
       <CreateProduct
-            openModalCreate={openModalCreate}
-            setOpenModelCreate={setOpenModelCreate}
-            refreshTable={refreshTable}
+        openModalCreate={openModalCreate}
+        setOpenModelCreate={setOpenModelCreate}
+        refreshTable={refreshTable}
       />
       <UpdateProduct
-            openModalUpdate={openModalUpdate}
-            setOpenModelUpdate={setOpenModelUpdate}
-            refreshTable={refreshTable}
-            dataUpdate={dataUpdate}
-           setDataUpdate={setDataUpdate}
-            />
+        openModalUpdate={openModalUpdate}
+        setOpenModelUpdate={setOpenModelUpdate}
+        refreshTable={refreshTable}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
+      />
       <DeleteProduct
-            openModalDelete={openModalDelete}
-            setOpenModelDelete={setOpenModelDelete}
-            refreshTable={refreshTable}
-            dataDelete={dataDelete}
-           setDataDelete={setDataDelete}
-            />
+        openModalDelete={openModalDelete}
+        setOpenModelDelete={setOpenModelDelete}
+        refreshTable={refreshTable}
+        dataDelete={dataDelete}
+        setDataDelete={setDataDelete}
+      />
     </>
   );
 };

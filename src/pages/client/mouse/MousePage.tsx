@@ -18,18 +18,18 @@ import {
   ReloadOutlined,
   SortAscendingOutlined,
 } from "@ant-design/icons";
-import { fetchCategoryAPI, fetchCategoryIdAPI, fetchProductAPI } from "@/service/admim/fetchAPI";
+import { fetchProductAPI } from "@/services/admin/api.admin";
+
 
 const MousePage = () => {
-  
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [currentPage, setCurrentPage] = useState(1);
-  const [listMouse, setListMouse]=useState<IProductTable[]>([]);
-    const [current, setCurrent]=useState<number>(5);
-    const [pageSize, setPageSize]=useState<number>(5);
-    const [total, setTotal]=useState<number>(5);
-      const [loading, setLoading] = useState<boolean>(false);
+  const [listMouse, setListMouse] = useState<IProductTable[]>([]);
+  const [current, setCurrent] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(5);
+  const [total, setTotal] = useState<number>(5);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onFinish = (values: any) => {
     console.log("Filter:", values);
@@ -38,42 +38,43 @@ const MousePage = () => {
   const handleReset = () => {
     form.resetFields();
   };
-  
 
-// Lấy category
-useEffect(() => {
-  fetchProduct();
-}, [currentPage, pageSize]);
+  // Lấy category
+  useEffect(() => {
+    fetchProduct();
+  }, [currentPage, pageSize]);
 
-const fetchProduct = async () => {
-  setLoading(true);
+  const fetchProduct = async () => {
+    setLoading(true);
 
-  const query = ``;
+    const query = ``;
 
-  const res = await fetchProductAPI(query);
+    const res = await fetchProductAPI(query);
 
-  if (res && res.data?.result) {
+    if (res && res.data?.result) {
+      const filtered = res.data.result.filter((item: IProductTable) =>
+        item.categoryId?.name?.toLowerCase().includes("chuột"),
+      );
 
-    const filtered = res.data.result.filter((item: IProductTable) =>
-      item.categoryId?.name?.toLowerCase().includes("chuột")
-    );
+      setListMouse(filtered);
+      setTotal(filtered.length);
+    }
 
-    setListMouse(filtered);
-    setTotal(filtered.length);
-  }
+    setLoading(false);
+  };
 
-  setLoading(false);
-};
-
-  const handleOnchangePage = (pagination:{current: number, pageSize: number}) => {
-  if(pagination && pagination.current != current){
-    setCurrent(pagination.current)
-  }
-   if(pagination && pagination.pageSize != pageSize){
-    setPageSize(pagination.pageSize)
-    setCurrent(1)
-  }
-  }
+  const handleOnchangePage = (pagination: {
+    current: number;
+    pageSize: number;
+  }) => {
+    if (pagination && pagination.current != current) {
+      setCurrent(pagination.current);
+    }
+    if (pagination && pagination.pageSize != pageSize) {
+      setPageSize(pagination.pageSize);
+      setCurrent(1);
+    }
+  };
   return (
     <div
       style={{
@@ -226,10 +227,9 @@ const fetchProduct = async () => {
               ]}
             />
           </div>
-           
 
           {/* PRODUCT LIST */}
-             <Row gutter={[20, 20]}>
+          <Row gutter={[20, 20]}>
             {listMouse.map((item) => (
               <Col span={6} key={item._id}>
                 <Card
@@ -264,16 +264,16 @@ const fetchProduct = async () => {
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     >
-                    <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}/images/${item.image}`}
-                    alt={item.name}
-                    style={{
-                      width: "100%",
-                      height: 200,
-                      objectFit: "cover",
-                      borderRadius: 6,
-                    }}
-                  />
+                      <img
+                        src={`${import.meta.env.VITE_BACKEND_URL}/images/${item.image}`}
+                        alt={item.name}
+                        style={{
+                          width: "100%",
+                          height: 200,
+                          objectFit: "cover",
+                          borderRadius: 6,
+                        }}
+                      />
                     </div>
                   }
                 >
@@ -287,19 +287,17 @@ const fetchProduct = async () => {
                     {item.name}
                   </div>
 
-                   <div style={{ color: "red", fontWeight: 600 }}>
+                  <div style={{ color: "red", fontWeight: 600 }}>
                     {new Intl.NumberFormat("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     }).format(item.price)}
                   </div>
-
-                  
                 </Card>
               </Col>
             ))}
           </Row>
-     
+
           {/* PAGINATION */}
           <div style={{ marginTop: 40, textAlign: "center" }}>
             <Pagination
@@ -307,12 +305,15 @@ const fetchProduct = async () => {
               total={total}
               pageSize={pageSize}
               responsive
-              onChange={(p,s) => handleOnchangePage({current: p, pageSize: s})}
+              onChange={(p, s) =>
+                handleOnchangePage({ current: p, pageSize: s })
+              }
             />
           </div>
         </Col>
       </Row>
     </div>
-)};
+  );
+};
 
 export default MousePage;

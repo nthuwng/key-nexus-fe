@@ -1,4 +1,3 @@
-
 import {
   DeleteTwoTone,
   EditTwoTone,
@@ -16,15 +15,16 @@ import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
 import UserDetail from "../user/user.detail";
 import RoleDetail from "./role.detail";
-import { fetchRolesAPI } from "@/service/admim/fetchAPI";
+
 import CreateRole from "./roles.create";
+import { fetchRolesAPI } from "@/services/admin/api.admin";
 
 const TableRoles = () => {
   //Role Detail
   const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
 
   //Roles Create
-   const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
+  const [openModalCreate, setOpenModelCreate] = useState<boolean>(false);
   const [dataViewDetail, setDataViewDetail] = useState<IRoles | null>(null);
   const actionRef = useRef<ActionType>(null);
   const [meta, setMeta] = useState({
@@ -99,9 +99,9 @@ const TableRoles = () => {
       ),
     },
   ];
-const refreshTable= () => {
+  const refreshTable = () => {
     actionRef.current?.reload();
-}
+  };
   return (
     <>
       <ProTable<IRoles>
@@ -152,10 +152,7 @@ const refreshTable= () => {
             key="add"
             icon={<PlusOutlined />}
             type="primary"
-            onClick={() => 
-              setOpenModelCreate(true)
-
-            }
+            onClick={() => setOpenModelCreate(true)}
           >
             Add New
           </Button>,
@@ -172,7 +169,7 @@ const refreshTable= () => {
         openModalCreate={openModalCreate}
         setOpenModelCreate={setOpenModelCreate}
         refreshTable={refreshTable}
-        />
+      />
     </>
   );
 };

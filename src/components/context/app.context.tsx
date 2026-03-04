@@ -1,5 +1,6 @@
+import { getProfileAPI } from "@/services/admin/api.admin";
 import { createContext, useContext, useEffect, useState } from "react";
-import { getProfileAPI } from "@/service/auth";
+
 
 interface IAppContext {
   isAuthenticated: boolean;

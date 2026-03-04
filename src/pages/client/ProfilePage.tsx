@@ -9,8 +9,9 @@ import {
   CustomerServiceOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { getProfileAPI } from "@/service/auth";
+
 import { useNavigate } from "react-router-dom";
+import { getProfileAPI } from "@/services/admin/api.admin";
 
 const { Title, Text } = Typography;
 
