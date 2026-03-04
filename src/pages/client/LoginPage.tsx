@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { Input, Button, Typography, message, Form } from "antd";
 import {
   UserOutlined,
   LockOutlined,
   ArrowLeftOutlined,
-  LaptopOutlined,
   GoogleOutlined,
   FacebookFilled,
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import { useCurrentApp } from "@/components/context/app.context";
 import { loginAPI } from "@/services/admin/api.admin";
+import { Button, Input, message, Typography } from "antd";
 
 const { Title } = Typography;
 
@@ -32,6 +31,7 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const res = await loginAPI(email, password);
+      console.log("Login response:", res);
 
       if (res && res.data) {
         const { access_token, user } = res.data;
@@ -50,7 +50,7 @@ const LoginPage = () => {
         messageApi.error("Đăng nhập thất bại");
       }
     } catch (error: any) {
-      messageApi.error(error?.messageApi || "Sai tài khoản hoặc mật khẩu");
+      messageApi.error(error?.message);
     } finally {
       setLoading(false);
     }
@@ -213,7 +213,7 @@ const LoginPage = () => {
                 prefix={<UserOutlined />}
                 placeholder="Email của bạn"
                 value={email}
-                onChange={(e) => setemail(e.target.value)}
+                onChange={(e: any) => setemail(e.target.value)}
                 style={{ marginBottom: 16, height: 44 }}
               />
 
@@ -222,7 +222,7 @@ const LoginPage = () => {
                 prefix={<LockOutlined />}
                 placeholder="Mật khẩu"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: any) => setPassword(e.target.value)}
                 style={{ marginBottom: 20, height: 44 }}
               />
 
