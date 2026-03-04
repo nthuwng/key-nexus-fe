@@ -2,9 +2,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Row, Col, Card, Rate, Button, Breadcrumb } from "antd";
 import { HomeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useCart } from "@/components/context/cart.context";
+
 
 interface IProduct {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   oldPrice: number;
@@ -20,7 +22,7 @@ const MouseDetailPage = () => {
 
   const products: IProduct[] = [
     {
-      id: "1",
+      _id: "1",
       name: "Chuột Logitech G304 Wireless",
       price: 710000,
       oldPrice: 1200000,
@@ -32,7 +34,7 @@ const MouseDetailPage = () => {
         "https://resource.logitechg.com/w_800,c_limit,q_auto:best,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g304/g304-black-gallery-1.png",
     },
     {
-      id: "2",
+      _id: "2",
       name: "Chuột Logitech G102 LightSync",
       price: 400000,
       oldPrice: 700000,
@@ -45,7 +47,7 @@ const MouseDetailPage = () => {
     },
   ];
 
-  const product = products.find((p) => p.id === id);
+  const product = products.find((p) => p._id === id);
 
   if (!product) {
     return <div style={{ padding: 40 }}>Không tìm thấy sản phẩm</div>;
@@ -55,6 +57,7 @@ const MouseDetailPage = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSize, setSelectedSize] = useState<string>("Medium");
   const [expanded, setExpanded] = useState(false);
+  const { addToCart } = useCart();
 
   // Thumbnail gồm ảnh chuột + ảnh Unsplash
   const thumbnails = [
@@ -596,6 +599,18 @@ const MouseDetailPage = () => {
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = "#fff";
                   e.currentTarget.style.transform = "scale(1)";
+                }}
+                onClick={() => {
+                  addToCart({
+                    id: product._id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: quantity,
+                    color: selectedColor,
+                    
+                  });
+                  
                 }}
               >
                 Thêm vào giỏ

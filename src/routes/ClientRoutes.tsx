@@ -6,6 +6,8 @@ import ProfilePage from "@/pages/client/ProfilePage";
 import MousePage from "@/pages/client/mouse/MousePage";
 import KeyboardPage from "@/pages/client/KeyboardPage";
 import MouseDetailPage from "@/pages/client/mouse/MouseDetailPage";
+import CartPage from "@/pages/client/order/CartPage";
+import CheckoutPage from "@/pages/client/order/CheckoutPage";
 
 const ClientRoutes = () => {
   return (
@@ -16,6 +18,8 @@ const ClientRoutes = () => {
         <Route path="mouse" element={<MousePage />} />
         <Route path="mouse/:id" element={<MouseDetailPage />} />
         <Route path="keyboard" element={<KeyboardPage />} />
+        <Route path="cart" element={<CartPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

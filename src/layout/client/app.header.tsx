@@ -20,6 +20,7 @@ import { FaMouse, FaKeyboard } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useCurrentApp } from "@/components/context/app.context";
 import { useState } from "react";
+import { useCart } from "@/components/context/cart.context";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -42,6 +43,13 @@ const AppHeader = () => {
     useCurrentApp();
 
   const [hoverKey, setHoverKey] = useState<string | null>(null);
+
+  const { cart } = useCart();
+
+  const totalCartQuantity = cart.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
 
   // ===== Custom dropdown content =====
   const categoryMenu = (
@@ -218,6 +226,160 @@ const AppHeader = () => {
       </div>
     </div>
   );
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+
+  const cartPopoverContent = (
+    <div
+      style={{
+        width: 350,
+        borderRadius: 18,
+        overflow: "hidden",
+        backdropFilter: "blur(10px)",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: "14px 18px",
+          fontWeight: 700,
+          fontSize: 16,
+          background: "linear-gradient(135deg, #20214b, #2f3175)",
+          color: "#fff",
+        }}
+      >
+        🛒 Giỏ hàng của bạn
+      </div>
+
+      {/* Body */}
+      <div
+        style={{
+          maxHeight: 300,
+          overflowY: "auto",
+          padding: 18,
+          background: "#ffffff",
+        }}
+      >
+        {cart.length === 0 ? (
+          <div
+            style={{
+              textAlign: "center",
+              padding: 30,
+              color: "#888",
+            }}
+          >
+            Giỏ hàng trống
+          </div>
+        ) : (
+          cart.slice(0, 4).map((item) => (
+            <div
+              key={item.id}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 16,
+                padding: 12,
+                borderRadius: 12,
+                transition: "all 0.25s ease",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#f5f7ff";
+                e.currentTarget.style.transform = "translateX(4px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.transform = "translateX(0)";
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontWeight: 600,
+                    fontSize: 14,
+                    marginBottom: 6,
+                  }}
+                >
+                  {item.name}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "#666",
+                  }}
+                >
+                  Số lượng: {item.quantity}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  fontWeight: 700,
+                  color: "#ff4d4f",
+                  fontSize: 14,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {(item.price * item.quantity).toLocaleString()} đ
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Footer */}
+      {cart.length > 0 && (
+        <div
+          style={{
+            padding: 18,
+            background: "#fafbff",
+            borderTop: "1px solid #eee",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: 16,
+              fontWeight: 700,
+              fontSize: 16,
+            }}
+          >
+            <span>Tổng tiền</span>
+            <span style={{ color: "#fa5252" }}>
+              {totalPrice.toLocaleString()} đ
+            </span>
+          </div>
+
+          <Button
+            block
+            size="large"
+            style={{
+              height: 46,
+              borderRadius: 14,
+              fontWeight: 700,
+              fontSize: 15,
+              background: "linear-gradient(90deg, #ff4d4f, #d70018)",
+              border: "none",
+              boxShadow: "0 6px 18px rgba(59,130,246,0.35)",
+            }}
+            onClick={() => navigate("/cart")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "translateY(-2px)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "translateY(0)")
+            }
+          >
+            Xem giỏ hàng
+          </Button>
+        </div>
+      )}
+    </div>
+  );
 
   const avatarText = user?.username?.charAt(0) || user?.email?.charAt(0) || "U";
   const avatarColor = getAvatarColor(user?.username || user?.email);
@@ -304,21 +466,48 @@ const AppHeader = () => {
             <span style={{ fontWeight: 600 }}>Đơn hàng</span>
           </Space>
 
-          <Badge count={0}>
-            <Space
-              onClick={() => navigate("/cart")}
+          <Popover
+            content={cartPopoverContent}
+            trigger="hover"
+            placement="bottomRight"
+            mouseEnterDelay={0.2}
+            mouseLeaveDelay={0.2}
+          >
+            <Badge
+              count={totalCartQuantity}
+              size="small"
+              overflowCount={99}
+              offset={[-4, 4]}
               style={{
-                cursor: "pointer",
-                color: "#fff",
-                transition: "all 0.2s",
+                backgroundColor: "#ff4d4f",
+                fontWeight: 600,
+                boxShadow: "0 0 0 2px #312e81",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
-              <ShoppingCartOutlined style={{ fontSize: 18 }} />
-              <span style={{ fontWeight: 600 }}>Giỏ hàng</span>
-            </Space>
-          </Badge>
+              <div style={{ display: "flex", alignItems: "center" }}></div>
+              <Space
+                onClick={() => navigate("/cart")}
+                style={{
+                  cursor: "pointer",
+                  color: "#fff",
+                  transition: "all 0.2s ease",
+                  padding: "6px 12px",
+                  borderRadius: 8,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                <ShoppingCartOutlined style={{ fontSize: 20 }} />
+                <span style={{ fontWeight: 600 }}>Giỏ hàng</span>
+              </Space>
+            </Badge>
+          </Popover>
 
           {isAuthenticated ? (
             <Popover content={popoverContent} trigger="click">

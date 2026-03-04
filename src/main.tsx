@@ -5,8 +5,9 @@ import App from "./App";
 import { AppProvider } from "@/components/context/app.context";
 import "antd/dist/reset.css";
 import { ConfigProvider } from "antd";
-import enUS from 'antd/locale/en_US';
+import enUS from "antd/locale/en_US";
 import { App as AntApp } from "antd";
+import { CartProvider } from "./components/context/cart.context";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <ConfigProvider locale={enUS}>
           <AntApp>
-            <App />
+            <CartProvider>
+              <App />
+            </CartProvider>
           </AntApp>
         </ConfigProvider>
       </BrowserRouter>
