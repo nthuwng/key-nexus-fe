@@ -29,7 +29,7 @@ declare global {
     _id: string;
     fullName: string;
     email: string;
-    username: string;
+    password: string
     gender: string;
     phone?: string;
     status: string;
@@ -62,4 +62,25 @@ declare global {
     createdAt: string;
     updatedAt: string;
   }
+  interface ICategory {
+    _id: string;
+    name: string;
+    createdAt: string;
+
+  }
+    interface IProductTable {
+    _id: string;
+    name: string;
+    price: number;
+    quantity:number;
+    image: any;
+    brand: string
+    categoryId: ICategory
+    createdAt: string;
+
+  }
+
+
 }
+
+

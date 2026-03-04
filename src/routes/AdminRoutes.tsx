@@ -8,6 +8,8 @@ import UserPage from "@/pages/admin/UserPage";
 import RolesPage from "@/pages/admin/RolesPage";
 import { useEffect, useState } from "react";
 import FullScreenLoading from "@/components/common/FullScreenLoading";
+import CategoryPage from "@/pages/admin/CategoryPage";
+import ProductPage from "@/pages/admin/ProductPage";
 
 const AdminRoutes = () => {
   const { user } = useCurrentApp();
@@ -60,7 +62,27 @@ const AdminRoutes = () => {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="category"
+          element={
+            <ProtectedRoute>
+              <CategoryPage />
+            </ProtectedRoute>
+          }
+        />
+        
+         <Route
+          path="product"
+          element={
+            <ProtectedRoute>
+              <ProductPage />
+            </ProtectedRoute>
+          }
+      
+        />
       </Route>
+      
+      
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

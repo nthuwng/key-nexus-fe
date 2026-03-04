@@ -9,7 +9,7 @@ import {
   CustomerServiceOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { getProfileAPI } from "@/service/user";
+import { getProfileAPI } from "@/service/auth";
 import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
@@ -34,9 +34,9 @@ const ProfilePage = () => {
 
   // ===== LOGOUT =====
   const handleLogout = () => {
-    localStorage.clear();     // xóa toàn bộ local
+    localStorage.clear(); // xóa toàn bộ local
     setUser(null);
-    navigate("/login");       // chuyển về login
+    navigate("/login"); // chuyển về login
   };
 
   // ===== MENU CLICK =====

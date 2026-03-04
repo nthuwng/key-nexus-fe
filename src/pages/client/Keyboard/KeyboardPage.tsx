@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -18,87 +18,19 @@ import {
   ReloadOutlined,
   SortAscendingOutlined,
 } from "@ant-design/icons";
+import { fetchCategoryAPI, fetchCategoryIdAPI, fetchProductAPI } from "@/service/admim/fetchAPI";
 
 const KeyboardPage = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [currentPage, setCurrentPage] = useState(1);
+  const [listKeyBoard, setListKeyBoard]=useState<IProductTable[]>([]);
+    const [current, setCurrent]=useState<number>(5);
+    const [pageSize, setPageSize]=useState<number>(5);
+    const [total, setTotal]=useState<number>(5);
+      const [loading, setLoading] = useState<boolean>(false);
+ 
 
-  // ===== DATA BÀN PHÍM (GearVN style) =====
-  const products = [
-    {
-      id: 1,
-      name: "Bàn phím Logitech G Pro X TKL",
-      price: 2890000,
-      oldPrice: 3490000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-ban-phim-logitech-g-pro-x-tkl-1_800x.png",
-    },
-    {
-      id: 2,
-      name: "Bàn phím Logitech G213 Prodigy",
-      price: 990000,
-      oldPrice: 1490000,
-      rating: 4,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-ban-phim-logitech-g213-prodigy-1_800x.png",
-    },
-    {
-      id: 3,
-      name: "Bàn phím DareU EK87 RGB",
-      price: 690000,
-      oldPrice: 990000,
-      rating: 4,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-ban-phim-dareu-ek87-rgb-1_800x.png",
-    },
-    {
-      id: 4,
-      name: "Bàn phím Razer BlackWidow Essential",
-      price: 1590000,
-      oldPrice: 1990000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-ban-phim-razer-blackwidow-essential-1_800x.png",
-    },
-    {
-      id: 5,
-      name: "Bàn phím Akko 3087 World Tour",
-      price: 1790000,
-      oldPrice: 2290000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-akko-3087-world-tour-1_800x.png",
-    },
-    {
-      id: 6,
-      name: "Bàn phím Akko 3068B Plus Wireless",
-      price: 2090000,
-      oldPrice: 2590000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-akko-3068b-plus-1_800x.png",
-    },
-    {
-      id: 7,
-      name: "Bàn phím Keychron K2 Wireless",
-      price: 2390000,
-      oldPrice: 2890000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-keychron-k2-1_800x.png",
-    },
-    {
-      id: 8,
-      name: "Bàn phím DareU EK1280 RGB",
-      price: 490000,
-      oldPrice: 790000,
-      rating: 4,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-ban-phim-dareu-ek1280-rgb-1_800x.png",
-    },
-  ];
 
   const onFinish = (values: any) => {
     console.log("Filter:", values);
@@ -107,7 +39,41 @@ const KeyboardPage = () => {
   const handleReset = () => {
     form.resetFields();
   };
+  
 
+// Lấy category
+useEffect(() => {
+  fetchProduct();
+}, [currentPage, pageSize]);
+
+const fetchProduct = async () => {
+  setLoading(true);
+
+  const query = ``;
+
+  const res = await fetchProductAPI(query);
+
+  if (res && res.data?.result) {
+
+    const filtered = res.data.result.filter((item: IProductTable) =>
+      item.categoryId?.name?.toLowerCase().includes("bàn phím")
+    );
+
+    setListKeyBoard(filtered);
+    setTotal(filtered.length);
+  }
+
+  setLoading(false);
+};
+  const handleOnchangePage = (pagination:{current: number, pageSize: number}) => {
+  if(pagination && pagination.current != current){
+    setCurrent(pagination.current)
+  }
+   if(pagination && pagination.pageSize != pageSize){
+    setPageSize(pagination.pageSize)
+    setCurrent(1)
+  }
+  }
   return (
     <div
       style={{
@@ -260,88 +226,93 @@ const KeyboardPage = () => {
               ]}
             />
           </div>
+           
 
           {/* PRODUCT LIST */}
-          <Row gutter={[20, 20]}>
-            {products.map((item) => (
-              <Col span={6} key={item.id}>
+             <Row gutter={[20, 20]}>
+            {listKeyBoard.map((item) => (
+              <Col span={6} key={item._id}>
                 <Card
                   hoverable
-                  bordered={false}
+                  onClick={() => navigate(`/keyboard/${item._id}`)}
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
                     boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
                     border: "1px solid rgba(0,0,0,0.2)",
                     transition: "all 0.25s",
+                    cursor: "pointer",
                   }}
+                  bodyStyle={{ padding: 16 }}
                   cover={
                     <div
                       style={{
                         height: 200,
-                        background: "#f0f2f5",
+                        background: "#fff",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         padding: 10,
                       }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.08)";
+                        e.currentTarget.style.boxShadow =
+                          "0 4px 12px rgba(0,0,0,0.08)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
                     >
-                      <img
-                        alt={item.name}
-                        src={item.image}
-                        style={{
-                          maxHeight: "100%",
-                          maxWidth: "100%",
-                          objectFit: "contain",
-                        }}
-                      />
+                    <img
+                    src={`${import.meta.env.VITE_BACKEND_URL}/images/${item.image}`}
+                    alt={item.name}
+                    style={{
+                      width: "100%",
+                      height: 200,
+                      objectFit: "cover",
+                      borderRadius: 6,
+                    }}
+                  />
                     </div>
                   }
                 >
-                  <div style={{ fontWeight: 500, minHeight: 44 }}>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 500,
+                      minHeight: 44,
+                    }}
+                  >
                     {item.name}
                   </div>
 
-                  <div
-                    style={{
-                      color: "#999",
-                      textDecoration: "line-through",
-                      fontSize: 13,
-                    }}
-                  >
-                    {item.oldPrice.toLocaleString()}đ
+                   <div style={{ color: "red", fontWeight: 600 }}>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(item.price)}
                   </div>
 
-                  <div
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 700,
-                      color: "#ff4d4f",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {item.price.toLocaleString()}đ
-                  </div>
-
-                  <Rate disabled defaultValue={item.rating} />
+                  
                 </Card>
               </Col>
             ))}
           </Row>
-
+     
           {/* PAGINATION */}
           <div style={{ marginTop: 40, textAlign: "center" }}>
             <Pagination
               current={currentPage}
-              total={50}
-              pageSize={8}
-              onChange={(page) => setCurrentPage(page)}
+              total={total}
+              pageSize={pageSize}
+              responsive
+              onChange={(p,s) => handleOnchangePage({current: p, pageSize: s})}
             />
           </div>
         </Col>
       </Row>
     </div>
-  );
-};
+)};
 
 export default KeyboardPage;

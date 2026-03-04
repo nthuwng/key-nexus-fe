@@ -1,4 +1,4 @@
-import { fetchUserAPI, updateUserStatusAPI } from "@/service/admin";
+
 import {
   DeleteTwoTone,
   EditTwoTone,
@@ -15,10 +15,26 @@ import {
 import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
 import "./table.user.css";
+import UserDetail from "./user.detail";
+import { fetchUserAPI, updateUserStatusAPI } from "@/service/admim/fetchAPI";
+import CreateProduct from "../product/product.create";
+import CreateUser from "./user.create";
+import DeleteUser from "./user.delete";
 
 const TableUser = () => {
   const actionRef = useRef<ActionType>(null);
 
+  //User detail
+  const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+  const [dataViewDetail, setDataViewDetail] = useState<IUserTable | null>(null);
+
+ //User Create
+   const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
+     
+   //Product Delete
+
+  const [openModalDelete, setOpenModelDelete]= useState<boolean>(false)
+  const [dataDelete,setDataDelete] =useState<IUserTable| null>(null);
   const [meta, setMeta] = useState({
     current: 1,
     pageSize: 5,
@@ -62,7 +78,8 @@ const TableUser = () => {
           <a
             href="#"
             onClick={() => {
-              console.log("Xem chi tiết:", entity);
+              setOpenViewDetail(true);
+              setDataViewDetail(entity);
             }}
           >
             {entity.fullName}
@@ -141,6 +158,7 @@ const TableUser = () => {
           bg = "linear-gradient(135deg,#dcfce7,#bbf7d0)";
           color = "#166534";
         }
+        
 
         return (
           <div
@@ -169,7 +187,7 @@ const TableUser = () => {
       title: "Action",
       hideInSearch: true,
       width: 120,
-      render: () => (
+      render: (_, entity) => (
         <Space size="middle">
           <Tooltip title="Edit">
             <EditTwoTone
@@ -188,65 +206,99 @@ const TableUser = () => {
                 cursor: "pointer",
                 fontSize: 18,
               }}
+                onClick={() => 
+        {
+            setDataDelete(entity)
+            setOpenModelDelete(true)
+                        }}
             />
           </Tooltip>
         </Space>
       ),
     },
   ];
-
+const refreshTable= () => {
+    actionRef.current?.reload();
+}
   return (
-    <ProTable<IUserTable>
-      columns={columns}
-      actionRef={actionRef}
-      cardBordered
-      request={async (params, sort, filter) => {
-        const res = await fetchUserAPI();
-        if (res.data) {
-          setMeta(res.data.meta);
-        }
+    <>
+      <ProTable<IUserTable>
+        columns={columns}
+        actionRef={actionRef}
+        cardBordered
+        request={async (params, sort, filter) => {
+          let query = "";
+          if (params) {
+            query += `current=${params.current}&pageSize=${params.pageSize}`;
+          }
+          const res = await fetchUserAPI(query);
+          if (res.data) {
+            setMeta(res.data.meta);
+          }
 
-        return {
-          data: res.data?.result,
-          success: true,
-          total: res.data?.meta.total,
-        };
-      }}
-      rowKey="_id"
-      pagination={{
-        current: meta.current,
-        pageSize: meta.pageSize,
-        showSizeChanger: true,
-        total: meta.total,
-        showTotal: (total, range) => {
-          return (
-            <div>
-              {" "}
-              {range[0]}-{range[1]} trên {total} rows
-            </div>
-          );
-        },
-      }}
-      headerTitle="Customer Management"
-      toolbar={{
-        filter: (
-          <LightFilter>
-            <ProFormDatePicker name="startdate" label="Date" />
-          </LightFilter>
-        ),
-      }}
-      toolBarRender={() => [
-        <Button
-          key="add"
-          icon={<PlusOutlined />}
-          type="primary"
-          onClick={() => message.info("Open modal Add New")}
-        >
-          Add New
-        </Button>,
-      ]}
-      search={false}
-    />
+          return {
+            data: res.data?.result,
+            success: true,
+            total: res.data?.meta.total,
+          };
+        }}
+        rowKey="_id"
+        pagination={{
+          current: meta.current,
+          pageSize: meta.pageSize,
+          showSizeChanger: true,
+          total: meta.total,
+          showTotal: (total, range) => {
+            return (
+              <div>
+                {" "}
+                {range[0]}-{range[1]} trên {total} rows
+              </div>
+            );
+          },
+        }}
+        headerTitle="Customer Management"
+        toolbar={{
+          filter: (
+            <LightFilter>
+              <ProFormDatePicker name="startdate" label="Date" />
+            </LightFilter>
+          ),
+        }}
+        toolBarRender={() => [
+          <Button
+            key="add"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() =>
+              setOpenModelCreate(true) 
+
+            }
+          >
+            Add New
+          </Button>,
+        ]}
+        search={false}
+      />
+      <UserDetail
+        openViewDetail={openViewDetail}
+        setOpenViewDetail={setOpenViewDetail}
+        dataViewDetail={dataViewDetail}
+        setDataViewDetail={setDataViewDetail}
+      />
+      <CreateUser
+      openModalCreate={openModalCreate}
+      setOpenModelCreate={setOpenModelCreate}
+      refreshTable={refreshTable}
+      />
+        <DeleteUser
+            openModalDelete={openModalDelete}
+            setOpenModelDelete={setOpenModelDelete}
+            refreshTable={refreshTable}
+            dataDelete={dataDelete}
+           setDataDelete={setDataDelete}
+            />
+    </>
   );
 };
 

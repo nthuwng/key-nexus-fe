@@ -1,4 +1,3 @@
-
 import {
   DeleteTwoTone,
   EditTwoTone,
@@ -14,27 +13,39 @@ import {
 } from "@ant-design/pro-components";
 import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
-import UserDetail from "../user/user.detail";
-import RoleDetail from "./role.detail";
-import { fetchRolesAPI } from "@/service/admim/fetchAPI";
-import CreateRole from "./roles.create";
+import CategoryDetail from "./category.detail";
+import { fetchCategoryAPI } from "@/service/admim/fetchAPI";
+import CreateCategory from "./category.create";
+import DeleteCategory from "./category.delete";
+import UpdateCategory from "./category.update";
 
-const TableRoles = () => {
-  //Role Detail
+const TableCategory = () => {
+  //Category detail
   const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+  const [dataViewDetail, setDataViewDetail] = useState<ICategory | null>(null);
 
-  //Roles Create
-   const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
-  const [dataViewDetail, setDataViewDetail] = useState<IRoles | null>(null);
+  //Category Create
+  const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
   const actionRef = useRef<ActionType>(null);
+
+  //Product Update
+    const [openModalUpdate, setOpenModelUpdate]= useState<boolean>(false)
+     const [dataUpdate,setDataUpdate] =useState<ICategory| null>(null);
+
+  //Product Delete
+  
+    const [openModalDelete, setOpenModelDelete]= useState<boolean>(false)
+    const [dataDelete,setDataDelete] =useState<ICategory| null>(null);
+    
   const [meta, setMeta] = useState({
+
     current: 1,
     pageSize: 5,
     pages: 0,
     total: 0,
   });
 
-  const columns: ProColumns<IRoles>[] = [
+  const columns: ProColumns<ICategory>[] = [
     {
       dataIndex: "index",
       valueType: "indexBorder",
@@ -61,11 +72,7 @@ const TableRoles = () => {
       title: "Name",
       dataIndex: "name",
     },
-    // {
-    //   title: "Permissions",
-    //   dataIndex: "permissions",
-    // },
-    {
+   {
       title: "Created At",
       dataIndex: "createdAt",
       valueType: "dateTime",
@@ -74,10 +81,15 @@ const TableRoles = () => {
       title: "Action",
       hideInSearch: true,
       width: 120,
-      render: () => (
+      render: (_,entity) => (
         <Space size="middle">
           <Tooltip title="Edit">
             <EditTwoTone
+             onClick={() => 
+        {
+            setDataUpdate(entity)
+            setOpenModelUpdate(true)
+                        }}
               twoToneColor="#faad14"
               style={{
                 cursor: "pointer",
@@ -87,12 +99,17 @@ const TableRoles = () => {
           </Tooltip>
 
           <Tooltip title="Delete">
-            <DeleteTwoTone
+             <DeleteTwoTone
               twoToneColor="#ff4d4f"
               style={{
                 cursor: "pointer",
                 fontSize: 18,
               }}
+                onClick={() => 
+        {
+            setDataDelete(entity)
+            setOpenModelDelete(true)
+                        }}
             />
           </Tooltip>
         </Space>
@@ -104,7 +121,7 @@ const refreshTable= () => {
 }
   return (
     <>
-      <ProTable<IRoles>
+      <ProTable<ICategory>
         columns={columns}
         actionRef={actionRef}
         cardBordered
@@ -113,7 +130,7 @@ const refreshTable= () => {
           if (params) {
             query += `current=${params.current}&pageSize=${params.pageSize}`;
           }
-          const res = await fetchRolesAPI(query);
+          const res = await fetchCategoryAPI(query);
           if (res.data) {
             setMeta(res.data.meta);
           }
@@ -153,8 +170,8 @@ const refreshTable= () => {
             icon={<PlusOutlined />}
             type="primary"
             onClick={() => 
+              
               setOpenModelCreate(true)
-
             }
           >
             Add New
@@ -162,19 +179,35 @@ const refreshTable= () => {
         ]}
         search={false}
       />
-      <RoleDetail
+      <CategoryDetail
         openViewDetail={openViewDetail}
         setOpenViewDetail={setOpenViewDetail}
         dataViewDetail={dataViewDetail}
         setDataViewDetail={setDataViewDetail}
       />
-      <CreateRole
-        openModalCreate={openModalCreate}
-        setOpenModelCreate={setOpenModelCreate}
-        refreshTable={refreshTable}
-        />
+
+      <CreateCategory
+      openModalCreate={openModalCreate}
+      setOpenModelCreate={setOpenModelCreate}
+      refreshTable={refreshTable}
+      />
+        <UpdateCategory
+            openModalUpdate={openModalUpdate}
+            setOpenModelUpdate={setOpenModelUpdate}
+            refreshTable={refreshTable}
+            dataUpdate={dataUpdate}
+           setDataUpdate={setDataUpdate}
+            />
+      
+       <DeleteCategory
+            openModalDelete={openModalDelete}
+            setOpenModelDelete={setOpenModelDelete}
+            refreshTable={refreshTable}
+            dataDelete={dataDelete}
+           setDataDelete={setDataDelete}
+            />
     </>
   );
 };
 
-export default TableRoles;
+export default TableCategory;

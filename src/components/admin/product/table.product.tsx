@@ -14,18 +14,29 @@ import {
 } from "@ant-design/pro-components";
 import { Button, message, Space, Tag, Tooltip } from "antd";
 import { useRef, useState } from "react";
-import UserDetail from "../user/user.detail";
-import RoleDetail from "./role.detail";
-import { fetchRolesAPI } from "@/service/admim/fetchAPI";
-import CreateRole from "./roles.create";
+import ProductDetail from "./product.detail";
+import CreateProduct from "./product.create";
+import { fetchProductAPI } from "@/service/admim/fetchAPI";
+import UpdateProduct from "./product.update";
+import DeleteProduct from "./product.delete";
 
-const TableRoles = () => {
-  //Role Detail
+
+const TableProduct = () => {
+  //Product detail
   const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+  const [dataViewDetail, setDataViewDetail] = useState<IProductTable | null>(null);
 
-  //Roles Create
+  //Product Create
    const [openModalCreate, setOpenModelCreate]= useState<boolean>(false)
-  const [dataViewDetail, setDataViewDetail] = useState<IRoles | null>(null);
+      
+  //Product Update
+    const [openModalUpdate, setOpenModelUpdate]= useState<boolean>(false)
+     const [dataUpdate,setDataUpdate] =useState<IProductTable| null>(null);
+
+  //Product Delete
+
+  const [openModalDelete, setOpenModelDelete]= useState<boolean>(false)
+     const [dataDelete,setDataDelete] =useState<IProductTable| null>(null);
   const actionRef = useRef<ActionType>(null);
   const [meta, setMeta] = useState({
     current: 1,
@@ -34,7 +45,7 @@ const TableRoles = () => {
     total: 0,
   });
 
-  const columns: ProColumns<IRoles>[] = [
+  const columns: ProColumns<IProductTable>[] = [
     {
       dataIndex: "index",
       valueType: "indexBorder",
@@ -61,27 +72,50 @@ const TableRoles = () => {
       title: "Name",
       dataIndex: "name",
     },
-    // {
-    //   title: "Permissions",
-    //   dataIndex: "permissions",
-    // },
+    {
+      title: "Price",
+      dataIndex: "price",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Brand",
+      dataIndex: "brand",
+    },
+      {
+      title: "categoryId",
+      dataIndex:"categoryId",
+       render: (_, record) => {
+ return record.categoryId?.name || "";
+      },
+      
+    },
     {
       title: "Created At",
       dataIndex: "createdAt",
       valueType: "dateTime",
     },
+
     {
       title: "Action",
       hideInSearch: true,
       width: 120,
-      render: () => (
+      render: (_,entity) => (
         <Space size="middle">
           <Tooltip title="Edit">
             <EditTwoTone
               twoToneColor="#faad14"
+              onClick={() => 
+        {
+            setDataUpdate(entity)
+            setOpenModelUpdate(true)
+                        }}
               style={{
                 cursor: "pointer",
                 fontSize: 18,
+                
               }}
             />
           </Tooltip>
@@ -93,6 +127,11 @@ const TableRoles = () => {
                 cursor: "pointer",
                 fontSize: 18,
               }}
+                onClick={() => 
+        {
+            setDataDelete(entity)
+            setOpenModelDelete(true)
+                        }}
             />
           </Tooltip>
         </Space>
@@ -102,9 +141,10 @@ const TableRoles = () => {
 const refreshTable= () => {
     actionRef.current?.reload();
 }
+  
   return (
     <>
-      <ProTable<IRoles>
+      <ProTable<IProductTable>
         columns={columns}
         actionRef={actionRef}
         cardBordered
@@ -113,7 +153,7 @@ const refreshTable= () => {
           if (params) {
             query += `current=${params.current}&pageSize=${params.pageSize}`;
           }
-          const res = await fetchRolesAPI(query);
+          const res = await fetchProductAPI(query);
           if (res.data) {
             setMeta(res.data.meta);
           }
@@ -162,19 +202,33 @@ const refreshTable= () => {
         ]}
         search={false}
       />
-      <RoleDetail
-        openViewDetail={openViewDetail}
-        setOpenViewDetail={setOpenViewDetail}
-        dataViewDetail={dataViewDetail}
-        setDataViewDetail={setDataViewDetail}
+      <ProductDetail
+          openViewDetail={openViewDetail}
+          setOpenViewDetail={setOpenViewDetail}
+            dataViewDetail={dataViewDetail}
+            setDataViewDetail={setDataViewDetail}
       />
-      <CreateRole
-        openModalCreate={openModalCreate}
-        setOpenModelCreate={setOpenModelCreate}
-        refreshTable={refreshTable}
-        />
+      <CreateProduct
+            openModalCreate={openModalCreate}
+            setOpenModelCreate={setOpenModelCreate}
+            refreshTable={refreshTable}
+      />
+      <UpdateProduct
+            openModalUpdate={openModalUpdate}
+            setOpenModelUpdate={setOpenModelUpdate}
+            refreshTable={refreshTable}
+            dataUpdate={dataUpdate}
+           setDataUpdate={setDataUpdate}
+            />
+      <DeleteProduct
+            openModalDelete={openModalDelete}
+            setOpenModelDelete={setOpenModelDelete}
+            refreshTable={refreshTable}
+            dataDelete={dataDelete}
+           setDataDelete={setDataDelete}
+            />
     </>
   );
 };
 
-export default TableRoles;
+export default TableProduct;

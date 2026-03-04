@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import {
   Layout,
   Menu,
@@ -20,10 +20,13 @@ import {
   SafetyOutlined,
   HomeOutlined,
   RightOutlined,
+  AppstoreOutlined,
+  ProductOutlined,
 } from "@ant-design/icons";
 import { useCurrentApp } from "@/components/context/app.context";
-import { useState } from "react";
+import { Children, useState } from "react";
 import "./layout.admin.css";
+import { FaKeyboard, FaMouse } from "react-icons/fa";
 
 const { Sider, Content, Header } = Layout;
 
@@ -54,6 +57,19 @@ const LayoutAdmin = () => {
       icon: <SafetyOutlined />,
       label: "Roles",
     },
+    {
+      key: "/admin/category",
+      icon: <AppstoreOutlined />,
+      label: "Category",
+    },
+   
+     {
+      key: "/admin/product",
+      icon: <ProductOutlined />,
+      label: "Product",
+      
+    },
+   
   ];
 
   const menuBottom = [

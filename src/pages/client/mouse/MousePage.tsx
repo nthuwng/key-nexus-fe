@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -18,86 +18,18 @@ import {
   ReloadOutlined,
   SortAscendingOutlined,
 } from "@ant-design/icons";
+import { fetchCategoryAPI, fetchCategoryIdAPI, fetchProductAPI } from "@/service/admim/fetchAPI";
 
 const MousePage = () => {
+  
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [currentPage, setCurrentPage] = useState(1);
-
-  const products = [
-    {
-      id: 1,
-      name: "Chuột Logitech G304 Wireless",
-      price: 720000,
-      oldPrice: 1200000,
-      rating: 5,
-      image:
-        "https://resource.logitechg.com/w_800,c_limit,q_auto:best,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g304/g304-black-gallery-1.png",
-    },
-    {
-      id: 2,
-      name: "Chuột Logitech G102 LightSync",
-      price: 400000,
-      oldPrice: 700000,
-      rating: 5,
-      image:
-        "https://resource.logitechg.com/w_800,c_limit,q_auto:best,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g102/g102-black-gallery-1.png",
-    },
-    {
-      id: 3,
-      name: "Chuột DareU EM911 RGB",
-      price: 400000,
-      oldPrice: 690000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-chuot-dareu-em911-rgb-1_800x.png",
-    },
-    {
-      id: 4,
-      name: "Chuột Logitech G Pro Wireless",
-      price: 2290000,
-      oldPrice: 2990000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-chuot-logitech-g-pro-wireless-1_800x.png",
-    },
-    {
-      id: 5,
-      name: "Chuột Razer DeathAdder Essential",
-      price: 490000,
-      oldPrice: 790000,
-      rating: 4,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-chuot-razer-deathadder-essential-1_800x.png",
-    },
-    {
-      id: 6,
-      name: "Chuột DareU EM908 RGB",
-      price: 350000,
-      oldPrice: 590000,
-      rating: 4,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-chuot-dareu-em908-rgb-1_800x.png",
-    },
-    {
-      id: 7,
-      name: "Chuột Logitech G502 Hero",
-      price: 990000,
-      oldPrice: 1490000,
-      rating: 5,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-chuot-logitech-g502-hero-1_800x.png",
-    },
-    {
-      id: 8,
-      name: "Chuột Razer Basilisk Essential",
-      price: 890000,
-      oldPrice: 1290000,
-      rating: 4,
-      image:
-        "https://gearvn.com/cdn/shop/products/gearvn-chuot-razer-basilisk-essential-1_800x.png",
-    },
-  ];
+  const [listMouse, setListMouse]=useState<IProductTable[]>([]);
+    const [current, setCurrent]=useState<number>(5);
+    const [pageSize, setPageSize]=useState<number>(5);
+    const [total, setTotal]=useState<number>(5);
+      const [loading, setLoading] = useState<boolean>(false);
 
   const onFinish = (values: any) => {
     console.log("Filter:", values);
@@ -106,7 +38,42 @@ const MousePage = () => {
   const handleReset = () => {
     form.resetFields();
   };
+  
 
+// Lấy category
+useEffect(() => {
+  fetchProduct();
+}, [currentPage, pageSize]);
+
+const fetchProduct = async () => {
+  setLoading(true);
+
+  const query = ``;
+
+  const res = await fetchProductAPI(query);
+
+  if (res && res.data?.result) {
+
+    const filtered = res.data.result.filter((item: IProductTable) =>
+      item.categoryId?.name?.toLowerCase().includes("chuột")
+    );
+
+    setListMouse(filtered);
+    setTotal(filtered.length);
+  }
+
+  setLoading(false);
+};
+
+  const handleOnchangePage = (pagination:{current: number, pageSize: number}) => {
+  if(pagination && pagination.current != current){
+    setCurrent(pagination.current)
+  }
+   if(pagination && pagination.pageSize != pageSize){
+    setPageSize(pagination.pageSize)
+    setCurrent(1)
+  }
+  }
   return (
     <div
       style={{
@@ -134,13 +101,13 @@ const MousePage = () => {
             ),
           },
           {
-            title: "Chuột máy tính - Chuột Gaming",
+            title: "Bàn phím Gaming",
           },
         ]}
       />
 
       <Row gutter={24}>
-        {/* ================== FILTER - COL 5 ================== */}
+        {/* ================== FILTER ================== */}
         <Col span={5}>
           <Card
             bordered={false}
@@ -159,24 +126,14 @@ const MousePage = () => {
                 }}
               >
                 <span>Bộ lọc tìm kiếm</span>
-
                 <ReloadOutlined
                   onClick={handleReset}
-                  style={{
-                    cursor: "pointer",
-                    fontSize: 16,
-                    transition: "0.2s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#1677ff")
-                  }
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                  style={{ cursor: "pointer", fontSize: 16 }}
                 />
               </div>
             }
           >
             <Form layout="vertical" form={form} onFinish={onFinish}>
-              {/* Giá */}
               <Form.Item
                 name="price"
                 label="Giá tiền"
@@ -188,12 +145,12 @@ const MousePage = () => {
               >
                 <Radio.Group>
                   <Radio value="1">Dưới 500.000đ</Radio>
-                  <Radio value="2">500.000đ - 1 triệu</Radio>
-                  <Radio value="3">Trên 1 triệu</Radio>
+                  <Radio value="2">từ 500.000đ - 1 triệu</Radio>
+                  <Radio value="3">Từ 1 - 2 triệu</Radio>
+                  <Radio value="4">Trên 2 triệu</Radio>
                 </Radio.Group>
               </Form.Item>
 
-              {/* Rating */}
               <Form.Item
                 name="rating"
                 label="Đánh giá"
@@ -214,87 +171,70 @@ const MousePage = () => {
                 </Radio.Group>
               </Form.Item>
 
-              {/* Brand */}
               <Form.Item name="brand" label="Thương hiệu">
                 <Checkbox.Group>
                   <Checkbox value="logitech">Logitech</Checkbox>
                   <Checkbox value="dareu">DareU</Checkbox>
                   <Checkbox value="razer">Razer</Checkbox>
+                  <Checkbox value="akko">Akko</Checkbox>
+                  <Checkbox value="keychron">Keychron</Checkbox>
                 </Checkbox.Group>
               </Form.Item>
 
-              <Form.Item>
-                <Button
-                  htmlType="submit"
-                  block
-                  size="large"
-                  style={{
-                    borderRadius: 8,
-                    background: "#183466",
-                    color: "#fff",
-                  }}
-                >
-                  Áp dụng
-                </Button>
-              </Form.Item>
+              <Button
+                htmlType="submit"
+                block
+                size="large"
+                style={{
+                  borderRadius: 8,
+                  background: "#183466",
+                  color: "#fff",
+                }}
+              >
+                Áp dụng
+              </Button>
             </Form>
           </Card>
         </Col>
 
-        {/* ================== PRODUCT - COL 19 ================== */}
+        {/* ================== PRODUCT ================== */}
         <Col span={19}>
-          {/* ===== SORT BAR ===== */}
+          {/* SORT BAR */}
           <div
             style={{
               background: "#3d407e",
               padding: "12px 20px",
               borderRadius: 12,
               marginBottom: 20,
-              boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
+              gap: 8,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {/* Icon */}
-              <SortAscendingOutlined
-                style={{
-                  fontSize: 18,
-                  color: "#fff",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
-                  border: "1px solid rgba(0,0,0,0.2)",
-                  transition: "all 0.25s",
-                }}
-              />
+            <SortAscendingOutlined style={{ fontSize: 18, color: "#fff" }} />
+            <span style={{ fontWeight: 500, color: "#fff" }}>Xếp theo:</span>
 
-              {/* Text */}
-              <span style={{ fontWeight: 500, color: "#fff" }}>Xếp theo:</span>
-
-              <Select
-                defaultValue="featured"
-                style={{ width: 180 }}
-                options={[
-                  { value: "featured", label: "Nổi bật" },
-                  { value: "az", label: "Tên từ A-Z" },
-                  { value: "za", label: "Tên từ Z-A" },
-                  { value: "popular", label: "Phổ biến" },
-                  { value: "newest", label: "Hàng mới" },
-                  { value: "priceAsc", label: "Giá tăng dần" },
-                  { value: "priceDesc", label: "Giá giảm dần" },
-                ]}
-              />
-            </div>
+            <Select
+              defaultValue="featured"
+              style={{ width: 180 }}
+              options={[
+                { value: "featured", label: "Nổi bật" },
+                { value: "popular", label: "Phổ biến" },
+                { value: "newest", label: "Hàng mới" },
+                { value: "priceAsc", label: "Giá tăng dần" },
+                { value: "priceDesc", label: "Giá giảm dần" },
+              ]}
+            />
           </div>
+           
 
-          {/* ===== PRODUCT LIST ===== */}
-          <Row gutter={[20, 20]}>
-            {products.map((item) => (
-              <Col span={6} key={item.id}>
+          {/* PRODUCT LIST */}
+             <Row gutter={[20, 20]}>
+            {listMouse.map((item) => (
+              <Col span={6} key={item._id}>
                 <Card
                   hoverable
-                  onClick={() => navigate(`/mouse/${item.id}`)}
+                  onClick={() => navigate(`/keyboard/${item._id}`)}
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
@@ -324,15 +264,16 @@ const MousePage = () => {
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     >
-                      <img
-                        alt={item.name}
-                        src={item.image}
-                        style={{
-                          maxHeight: "100%",
-                          maxWidth: "100%",
-                          objectFit: "contain",
-                        }}
-                      />
+                    <img
+                    src={`${import.meta.env.VITE_BACKEND_URL}/images/${item.image}`}
+                    alt={item.name}
+                    style={{
+                      width: "100%",
+                      height: 200,
+                      objectFit: "cover",
+                      borderRadius: 6,
+                    }}
+                  />
                     </div>
                   }
                 >
@@ -346,55 +287,32 @@ const MousePage = () => {
                     {item.name}
                   </div>
 
-                  <div
-                    style={{
-                      color: "#999",
-                      textDecoration: "line-through",
-                      fontSize: 13,
-                    }}
-                  >
-                    {item.oldPrice.toLocaleString()}đ
+                   <div style={{ color: "red", fontWeight: 600 }}>
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(item.price)}
                   </div>
 
-                  <div
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 700,
-                      color: "#ff4d4f",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {item.price.toLocaleString()}đ
-                  </div>
-
-                  <Rate
-                    disabled
-                    defaultValue={item.rating}
-                    style={{ fontSize: 14 }}
-                  />
+                  
                 </Card>
               </Col>
             ))}
           </Row>
-
-          {/* ===== PAGINATION ===== */}
-          <div
-            style={{
-              marginTop: 40,
-              textAlign: "center",
-            }}
-          >
+     
+          {/* PAGINATION */}
+          <div style={{ marginTop: 40, textAlign: "center" }}>
             <Pagination
               current={currentPage}
-              total={50}
-              pageSize={8}
-              onChange={(page) => setCurrentPage(page)}
+              total={total}
+              pageSize={pageSize}
+              responsive
+              onChange={(p,s) => handleOnchangePage({current: p, pageSize: s})}
             />
           </div>
         </Col>
       </Row>
     </div>
-  );
-};
+)};
 
 export default MousePage;

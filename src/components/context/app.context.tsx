@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getProfileAPI } from "@/service/user";
+import { getProfileAPI } from "@/service/auth";
 
 interface IAppContext {
   isAuthenticated: boolean;
@@ -14,7 +14,6 @@ const CurrentAppContext = createContext<IAppContext | null>(null);
 type TProps = {
   children: React.ReactNode;
 };
-
 
 export const AppProvider = (props: TProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
