@@ -192,7 +192,7 @@ const CartPage = () => {
                       <InputNumber
                         min={1}
                         value={item.quantity}
-                        onChange={(value) =>
+                        onChange={(value : any) =>
                           updateQuantity(item.id, value || 1, item.color)
                         }
                       />
