@@ -3,9 +3,12 @@ import LayoutClient from "@/layout/client/layout.client";
 import HomePage from "@/pages/client/HomePage/HomePage";
 import NotFoundPage from "@/components/common/error";
 import ProfilePage from "@/pages/client/ProfilePage";
-import MousePage from "@/pages/client/Mouse/MousePage";
+
+import CartPage from "@/pages/client/order/CartPage";
+import CheckoutPage from "@/pages/client/order/CheckoutPage";
+import MousePage from "@/pages/client/mouse/MousePage";
+import MouseDetailPage from "@/pages/client/mouse/MouseDetailPage";
 import KeyboardPage from "@/pages/client/Keyboard/KeyboardPage";
-import MouseDetailPage from "@/pages/client/Mouse/MouseDetailPage";
 import KeyboareDetailPage from "@/pages/client/Keyboard/KeyboarDetailPage";
 
 const ClientRoutes = () => {
@@ -18,6 +21,8 @@ const ClientRoutes = () => {
         <Route path="mouse/:id" element={<MouseDetailPage />} />
         <Route path="keyboard" element={<KeyboardPage />} />
         <Route path="keyboard/:id" element={<KeyboareDetailPage />} />
+        <Route path="cart" element={<CartPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

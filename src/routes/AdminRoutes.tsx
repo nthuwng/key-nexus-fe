@@ -13,7 +13,6 @@ import ProductPage from "@/pages/admin/ProductPage";
 
 const AdminRoutes = () => {
   const { user } = useCurrentApp();
-  console.log("AdminRoutes - user:", user);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
